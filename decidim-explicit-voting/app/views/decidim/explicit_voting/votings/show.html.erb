@@ -1,0 +1,134 @@
+<div class="row column">
+  <div class="title-action">
+    <h2 class="title-action__title section-heading">
+      <%= translated_attribute(voting.title) %>
+    </h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns mediumlarge-8">
+    <div class="card">
+      <div class="card__content">
+        <div class="card__header">
+          <h5 class="card__title">
+            <%= t(".description") %>
+          </h5>
+        </div>
+        <div class="card__text">
+          <%= decidim_sanitize_editor_admin translated_attribute(voting.description) %>
+        </div>
+      </div>
+    </div>
+
+    <% if voting.finished? || (!voting.secret? && allowed_to?(:read, :voting, voting: voting)) %>
+      <div class="card">
+        <div class="card__content">
+          <div class="card__header">
+            <h5 class="card__title">
+              <%= t(".results") %>
+            </h5>
+          </div>
+          <div class="card__text">
+            <div class="table-scroll">
+              <table class="table-list">
+                <thead>
+                  <tr>
+                    <th><%= t(".option") %></th>
+                    <th><%= t(".votes") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @voting_options.each do |option| %>
+                    <tr>
+                      <td><%= option.name %></td>
+                      <td><%= option.votes_count %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="columns mediumlarge-4">
+    <div class="card">
+      <div class="card__content">
+        <div class="card__header">
+          <h5 class="card__title">
+            <%= t(".information") %>
+          </h5>
+        </div>
+        <div class="card__text">
+          <div class="extra__date">
+            <strong><%= t(".start_date") %>:</strong>
+            <% if voting.start_date %>
+              <%= l voting.start_date, format: :long %>
+            <% else %>
+              <%= t(".not_set") %>
+            <% end %>
+          </div>
+          <div class="extra__date">
+            <strong><%= t(".end_date") %>:</strong>
+            <%= l voting.end_date, format: :long %>
+          </div>
+          <div class="extra">
+            <strong><%= t(".secret") %>:</strong>
+            <%= voting.secret? ? t(".yes") : t(".no") %>
+          </div>
+          <div class="extra">
+            <strong><%= t(".status") %>:</strong>
+            <% if voting.active? %>
+              <span class="success label"><%= t(".active") %></span>
+            <% elsif voting.upcoming? %>
+              <span class="warning label"><%= t(".upcoming") %></span>
+            <% else %>
+              <span class="alert label"><%= t(".finished") %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if voting.active? && allowed_to?(:vote, :voting, voting: voting) && !user_vote %>
+      <div class="card">
+        <div class="card__content">
+          <div class="card__header">
+            <h5 class="card__title">
+              <%= t(".vote") %>
+            </h5>
+          </div>
+          <div class="card__text">
+            <%= decidim_form_for(@form, url: voting_votes_path(voting), html: { class: "form vote_form" }) do |f| %>
+              <%= f.hidden_field :voting_id, value: voting.id %>
+              
+              <div class="field">
+                <% @voting_options.each do |option| %>
+                  <div class="radio-button-group">
+                    <%= f.radio_button :voting_option_id, option.id %>
+                    <%= f.label "voting_option_id_#{option.id}", option.name %>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="actions">
+                <%= f.submit t(".submit"), class: "button expanded", data: { disable: true } %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% elsif user_vote %>
+      <div class="card">
+        <div class="card__content">
+          <div class="callout success">
+            <%= t(".already_voted") %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div> 

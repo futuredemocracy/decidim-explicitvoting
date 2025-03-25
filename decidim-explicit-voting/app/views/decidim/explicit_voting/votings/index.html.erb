@@ -1,0 +1,65 @@
+<div class="row columns">
+  <div class="title-action">
+    <h2 class="title-action__title section-heading">
+      <%= t(".title") %>
+    </h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns">
+    <div class="card-grid">
+      <% votings.each do |voting| %>
+        <div class="card card--voting">
+          <div class="card__content">
+            <div class="card__header">
+              <%= link_to voting_path(voting), class: "card__link" do %>
+                <h5 class="card__title">
+                  <%= translated_attribute(voting.title) %>
+                </h5>
+              <% end %>
+            </div>
+            <div class="card__text">
+              <div class="card__text--paragraph">
+                <%= decidim_sanitize_editor_admin translated_attribute(voting.description) %>
+              </div>
+            </div>
+            <div class="card__status">
+              <% if voting.active? %>
+                <span class="card__status-label success">
+                  <%= t(".active") %>
+                </span>
+              <% elsif voting.upcoming? %>
+                <span class="card__status-label warning">
+                  <%= t(".upcoming") %>
+                </span>
+              <% else %>
+                <span class="card__status-label alert">
+                  <%= t(".finished") %>
+                </span>
+              <% end %>
+            </div>
+            <div class="card__footer">
+              <div class="card__footer-status">
+                <div class="card__footer--data">
+                  <span class="card__footer--label"><%= t(".end_date") %>:</span>
+                  <span class="card__footer--text"><%= l voting.end_date, format: :long %></span>
+                </div>
+                <div class="card__footer--data">
+                  <span class="card__footer--label"><%= t(".votes") %>:</span>
+                  <span class="card__footer--text">
+                    <% if voting.finished? || !voting.secret? %>
+                      <%= voting.votes.count %>
+                    <% else %>
+                      <%= t(".hidden") %>
+                    <% end %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 
