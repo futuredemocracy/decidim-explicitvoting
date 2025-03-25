@@ -22,6 +22,8 @@ group :development, :test do
 
   gem "brakeman", "~> 7.0"
   gem "parallel_tests", "~> 4.2"
+
+  gem 'dotenv-rails'
 end
 
 group :development do
