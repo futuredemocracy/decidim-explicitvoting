@@ -3,14 +3,32 @@
 module Decidim
   module ExplicitVoting
     class Vote < ApplicationRecord
-      belongs_to :author, class_name: "Decidim::User"
-      belongs_to :votable, polymorphic: true
-      belongs_to :organization, class_name: "Decidim::Organization"
+      belongs_to :voting, class_name: "Decidim::ExplicitVoting::Voting"
+      belongs_to :voting_option, class_name: "Decidim::ExplicitVoting::VotingOption"
+      belongs_to :user, foreign_key: "decidim_user_id", class_name: "Decidim::User"
 
-      validates :author, presence: true
-      validates :votable, presence: true
-      validates :organization, presence: true
-      validates :vote_type, presence: true
+      validates :voting, presence: true
+      validates :voting_option, presence: true
+      validates :user, presence: true
+      validates :voting_id, uniqueness: { scope: :decidim_user_id }
+
+      validate :voting_is_active
+      validate :voting_option_belongs_to_voting
+
+      private
+
+      def voting_is_active
+        return if voting&.active?
+
+        errors.add(:voting, :inactive)
+      end
+
+      def voting_option_belongs_to_voting
+        return unless voting && voting_option
+        return if voting_option.voting_id == voting.id
+
+        errors.add(:voting_option, :invalid)
+      end
     end
   end
 end 
