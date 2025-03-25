@@ -14,6 +14,7 @@ gem "decidim-templates", path: "."
 gem "bootsnap", "~> 1.4"
 
 gem "puma", ">= 6.3.1"
+gem "prawn", "~> 2.4"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
@@ -22,6 +23,8 @@ group :development, :test do
 
   gem "brakeman", "~> 7.0"
   gem "parallel_tests", "~> 4.2"
+
+  gem 'dotenv-rails'
 end
 
 group :development do

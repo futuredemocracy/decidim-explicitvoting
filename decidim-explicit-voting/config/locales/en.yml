@@ -1,0 +1,137 @@
+---
+en:
+  decidim:
+    authorization_transfer:
+      explicit_voting_votes:
+        description: Votes cast in explicit votings
+        title: Explicit voting votes
+    components:
+      explicit_voting:
+        name: Explicit Voting
+        settings:
+          global:
+            announcement: Announcement
+          step:
+            announcement: Announcement
+    explicit_voting:
+      admin:
+        voting_form:
+          errors:
+            end_date_after_start_date: End date must be after start date
+        voting_options:
+          create:
+            error: There was a problem creating the voting option
+            success: Voting option was successfully created
+          destroy:
+            error: There was a problem deleting the voting option
+            success: Voting option was successfully deleted
+          update:
+            error: There was a problem updating the voting option
+            success: Voting option was successfully updated
+        votings:
+          create:
+            error: There was a problem creating the voting
+            invalid: There was a problem creating the voting
+            success: Voting created successfully
+          destroy:
+            error: There was a problem deleting the voting
+            error_finished: Cannot delete a finished voting
+            success: Voting deleted successfully
+          index:
+            active: Active
+            confirm_destroy: Are you sure you want to delete this voting?
+            destroy: Delete
+            edit: Edit
+            end_date: End date
+            finished: Finished
+            new: New voting
+            protocol: Download protocol
+            results: Results
+            secret: Secret
+            secret_no: 'No'
+            secret_yes: 'Yes'
+            start_date: Start date
+            status: Status
+            title: Votings
+            upcoming: Upcoming
+            votes: Votes
+            no_html_format: "Protocol is only available in PDF format."
+            export_pdf: Export votings to PDF
+          results:
+            title: Voting Results
+            back: Back
+            question: Question
+            description: Description
+            dates: Dates
+            total_votes: Total votes
+            type: Voting type
+            secret_yes: "Secret"
+            secret_no: "Open"
+            still_active: "The voting is still active. Results may change."
+            results_heading: "Voting Results"
+            option: "Option"
+            votes_count: "Number of votes"
+            percentage: "Percentage"
+            votes_list: "List of votes"
+            user: "User"
+            selected_option: "Selected option"
+            vote_date: "Vote date"
+            unknown_user: "Unknown user"
+            unknown_option: "Unknown option"
+            export_protocol: "Download PDF protocol"
+            back_to_list: "Back to voting list"
+          new:
+            create: Create voting
+            title: New voting
+          update:
+            error: There was a problem updating the voting
+            invalid: There was a problem updating the voting
+            success: Voting updated successfully
+      votes:
+        create:
+          error: There was a problem casting your vote
+          success: Vote cast successfully
+        destroy:
+          error: There was a problem removing your vote.
+          success: Your vote was successfully removed.
+      votings:
+        index:
+          active: Active
+          end_date: End date
+          finished: Finished
+          hidden: Hidden
+          title: Votings
+          upcoming: Upcoming
+          votes: Votes
+        show:
+          active: Active
+          already_voted: You have already voted in this voting
+          cancel_vote: Cancel vote
+          confirm_cancel_vote: Are you sure you want to cancel your vote?
+          description: Description
+          end_date: End date
+          finished: Finished
+          information: Information
+          not_set: Not set
+          option: Option
+          results: Results
+          secret: Secret voting
+          secret_no: 'No'
+          secret_yes: 'Yes'
+          start_date: Start date
+          status: Status
+          submit: Vote
+          upcoming: Upcoming
+          vote: Cast your vote
+          votes: Votes
+    vote_types:
+      negative: Negative
+      neutral: Neutral
+      positive: Positive
+    votes:
+      create:
+        error: There was a problem registering your vote
+        success: Your vote has been registered successfully
+      destroy:
+        error: There was a problem removing your vote
+        success: Your vote has been removed successfully

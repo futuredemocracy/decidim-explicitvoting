@@ -1,0 +1,68 @@
+<div class="card" id="votings">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= t(".title") %>
+      <%= link_to t(".new"), new_voting_path, class: "button tiny button--title" if allowed_to? :create, :voting %>
+    </h2>
+  </div>
+
+  <div class="card-section">
+    <div class="table-scroll">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th><%= t(".title") %></th>
+            <th><%= t(".start_date") %></th>
+            <th><%= t(".end_date") %></th>
+            <th><%= t(".secret") %></th>
+            <th><%= t(".votes") %></th>
+            <th><%= t(".status") %></th>
+            <th class="actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% votings.each do |voting| %>
+            <tr>
+              <td>
+                <%= translated_attribute(voting.title) %>
+              </td>
+              <td>
+                <%= l voting.start_date, format: :long if voting.start_date %>
+              </td>
+              <td>
+                <%= l voting.end_date, format: :long %>
+              </td>
+              <td>
+                <%= voting.secret? ? t(".secret_yes") : t(".secret_no") %>
+              </td>
+              <td>
+                <%= voting.votes.count %>
+              </td>
+              <td>
+                <% if voting.active? %>
+                  <span class="label success"><%= t(".active") %></span>
+                <% elsif voting.upcoming? %>
+                  <span class="label warning"><%= t(".upcoming") %></span>
+                <% else %>
+                  <span class="label alert"><%= t(".finished") %></span>
+                <% end %>
+              </td>
+              <td class="table-list__actions">
+                <% if allowed_to? :update, :voting, voting: voting %>
+                  <%= link_to t(".edit"), edit_voting_path(voting), class: "action-icon" %>
+                <% end %>
+
+                <%= link_to t(".results"), results_voting_path(voting), class: "action-icon" %>
+                <%= link_to t(".protocol"), protocol_voting_path(voting), class: "action-icon" %>
+
+                <% if allowed_to?(:destroy, :voting, voting: voting) && !voting.finished? %>
+                  <%= link_to t(".destroy"), voting_path(voting), class: "action-icon", method: :delete, data: { confirm: t(".confirm_destroy") } %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

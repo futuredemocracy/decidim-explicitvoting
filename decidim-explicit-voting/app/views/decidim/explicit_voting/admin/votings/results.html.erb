@@ -1,0 +1,86 @@
+<%
+  voting = resource
+  total_votes = voting.votes.count
+%>
+
+<div class="card" id="voting-results">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= t(".title") %>
+      <%= link_to t(".back"), votings_path, class: "button tiny button--title" %>
+    </h2>
+  </div>
+
+  <div class="card-section">
+    <div class="voting-info">
+      <p><strong><%= t(".question") %>:</strong> <%= translated_attribute(voting.title) %></p>
+      <p><strong><%= t(".description") %>:</strong> <%= translated_attribute(voting.description) %></p>
+      <p><strong><%= t(".dates") %>:</strong> 
+        <%= l voting.start_date, format: :long if voting.start_date %> - 
+        <%= l voting.end_date, format: :long %>
+      </p>
+      <p><strong><%= t(".total_votes") %>:</strong> <%= total_votes %></p>
+      <p><strong><%= t(".type") %>:</strong> <%= voting.secret? ? t(".secret_yes") : t(".secret_no") %></p>
+
+      <% if voting.active? %>
+        <div class="callout warning">
+          <%= t(".still_active") %>
+        </div>
+      <% end %>
+    </div>
+
+    <h3 class="section-heading"><%= t(".results_heading") %></h3>
+
+    <div class="table-scroll">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th><%= t(".option") %></th>
+            <th><%= t(".votes_count") %></th>
+            <th><%= t(".percentage") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% voting.options.each do |option| %>
+            <% votes_count = option.votes.count %>
+            <% percent = total_votes > 0 ? (votes_count.to_f / total_votes * 100).round(2) : 0 %>
+            <tr>
+              <td><%= translated_attribute(option.name) %></td>
+              <td><%= votes_count %></td>
+              <td><%= "#{percent}%" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <% unless voting.secret? %>
+      <h3 class="section-heading"><%= t(".votes_list") %></h3>
+      <div class="table-scroll">
+        <table class="table-list">
+          <thead>
+            <tr>
+              <th><%= t(".user") %></th>
+              <th><%= t(".selected_option") %></th>
+              <th><%= t(".vote_date") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% voting.votes.includes(:user, :voting_option).each do |vote| %>
+              <tr>
+                <td><%= vote.user&.name || t(".unknown_user") %></td>
+                <td><%= translated_attribute(vote.voting_option&.name) || t(".unknown_option") %></td>
+                <td><%= l vote.created_at, format: :long %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <div class="button-group">
+      <%= link_to t(".export_protocol"), protocol_voting_path(voting), class: "button" %>
+      <%= link_to t(".back_to_list"), votings_path, class: "button hollow" %>
+    </div>
+  </div>
+</div> 

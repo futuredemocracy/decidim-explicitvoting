@@ -92,8 +92,14 @@ module Decidim
       # Forces the model to be indexed for the first time.
       def add_to_index_as_search_resource
         fields = self.class.search_resource_fields_mapper.mapped(self)
+        return unless fields.present? && fields[:i18n].present?
+        
         fields[:i18n].keys.each do |locale|
-          Decidim::SearchableResource.create!(contents_to_searchable_resource_attributes(fields, locale))
+          begin
+            Decidim::SearchableResource.create!(contents_to_searchable_resource_attributes(fields, locale))
+          rescue => e
+            Rails.logger.error "Error creating searchable resource: #{e.message}"
+          end
         end
       end
 
@@ -112,10 +118,16 @@ module Decidim
             add_to_index_as_search_resource
           else
             fields = self.class.search_resource_fields_mapper.mapped(self)
+            return unless fields.present?
+            
             searchables_in_org.find_each do |sr|
               next if sr.blank?
 
-              sr.update(contents_to_searchable_resource_attributes(fields, sr.locale))
+              begin
+                sr.update(contents_to_searchable_resource_attributes(fields, sr.locale))
+              rescue => e
+                Rails.logger.error "Error updating searchable resource: #{e.message}"
+              end
             end
           end
         elsif searchables_in_org.any?
@@ -132,7 +144,9 @@ module Decidim
       end
 
       def contents_to_searchable_resource_attributes(fields, locale)
-        contents = fields[:i18n][locale]
+        return {} unless fields[:i18n].present?
+        
+        contents = fields[:i18n][locale] || {}
         content_a = I18n.transliterate(contents[:A] || "")
         content_b = I18n.transliterate(contents[:B] || "")
         content_c = I18n.transliterate(contents[:C] || "")

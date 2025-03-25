@@ -36,3 +36,21 @@ decidim-packs
 packages/**/package-lock.json
 
 temporary_changelog.md
+.env
+development_app.log
+
+# Ignore generated gem files
+*.gem
+
+# Ignore temporary database files
+/db/development
+/db/test
+
+# Ignore database files in root directory
+/db/
+
+# Ignore database configuration
+config/database.yml
+
+# Custom files
+*.dump
