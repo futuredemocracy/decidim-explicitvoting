@@ -1,13 +1,91 @@
 en:
   decidim:
+    components:
+      explicit_voting:
+        name: Explicit Voting
+        settings:
+          global:
+            announcement: Announcement
+          step:
+            announcement: Announcement
     explicit_voting:
+      admin:
+        votings:
+          create:
+            invalid: There was a problem creating the voting
+            success: Voting created successfully
+          destroy:
+            success: Voting deleted successfully
+          edit:
+            title: Edit voting
+            update: Update voting
+          form:
+            title: General information
+          index:
+            title: Votings
+            new: New voting
+            confirm_destroy: Are you sure you want to delete this voting?
+            destroy: Delete
+            edit: Edit
+            results: Results
+            protocol: Download protocol
+            yes: "Yes"
+            no: "No"
+            active: Active
+            upcoming: Upcoming
+            finished: Finished
+          new:
+            title: New voting
+            create: Create voting
+          update:
+            invalid: There was a problem updating the voting
+            success: Voting updated successfully
+        voting_form:
+          errors:
+            end_date_after_start_date: End date must be after start date
+      votings:
+        index:
+          title: Votings
+          active: Active
+          upcoming: Upcoming
+          finished: Finished
+          end_date: End date
+          votes: Votes
+          hidden: Hidden
+        show:
+          description: Description
+          information: Information
+          results: Results
+          option: Option
+          votes: Votes
+          start_date: Start date
+          end_date: End date
+          secret: Secret voting
+          status: Status
+          yes: "Yes"
+          no: "No"
+          active: Active
+          upcoming: Upcoming
+          finished: Finished
+          not_set: Not set
+          vote: Cast your vote
+          submit: Vote
+          already_voted: You have already voted in this voting
       votes:
         create:
-          success: "Your vote has been registered successfully"
-          error: "There was a problem registering your vote"
-        destroy:
-          success: "Your vote has been removed successfully"
-          error: "There was a problem removing your vote"
+          error: There was a problem casting your vote
+          success: Vote cast successfully
+    authorization_transfer:
+      explicit_voting_votes:
+        description: Votes cast in explicit votings
+        title: Explicit voting votes
+    votes:
+      create:
+        success: "Your vote has been registered successfully"
+        error: "There was a problem registering your vote"
+      destroy:
+        success: "Your vote has been removed successfully"
+        error: "There was a problem removing your vote"
       vote_types:
         positive: "Positive"
         negative: "Negative"

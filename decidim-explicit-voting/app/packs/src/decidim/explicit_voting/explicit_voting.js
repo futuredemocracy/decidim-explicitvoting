@@ -1,0 +1,1 @@
+import "src/decidim/explicit_voting/vote_form"; 

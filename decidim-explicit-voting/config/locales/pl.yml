@@ -1,14 +1,92 @@
 pl:
   decidim:
+    components:
+      explicit_voting:
+        name: Głosowanie Jawne
+        settings:
+          global:
+            announcement: Ogłoszenie
+          step:
+            announcement: Ogłoszenie
     explicit_voting:
+      admin:
+        votings:
+          create:
+            invalid: Wystąpił problem podczas tworzenia głosowania
+            success: Głosowanie zostało utworzone pomyślnie
+          destroy:
+            success: Głosowanie zostało usunięte pomyślnie
+          edit:
+            title: Edytuj głosowanie
+            update: Aktualizuj głosowanie
+          form:
+            title: Informacje ogólne
+          index:
+            title: Głosowania
+            new: Nowe głosowanie
+            confirm_destroy: Czy na pewno chcesz usunąć to głosowanie?
+            destroy: Usuń
+            edit: Edytuj
+            results: Wyniki
+            protocol: Pobierz protokół
+            yes: "Tak"
+            no: "Nie"
+            active: Aktywne
+            upcoming: Nadchodzące
+            finished: Zakończone
+          new:
+            title: Nowe głosowanie
+            create: Utwórz głosowanie
+          update:
+            invalid: Wystąpił problem podczas aktualizacji głosowania
+            success: Głosowanie zostało zaktualizowane pomyślnie
+        voting_form:
+          errors:
+            end_date_after_start_date: Data zakończenia musi być późniejsza niż data rozpoczęcia
+      votings:
+        index:
+          title: Głosowania
+          active: Aktywne
+          upcoming: Nadchodzące
+          finished: Zakończone
+          end_date: Data zakończenia
+          votes: Głosy
+          hidden: Ukryte
+        show:
+          description: Opis
+          information: Informacje
+          results: Wyniki
+          option: Opcja
+          votes: Głosy
+          start_date: Data rozpoczęcia
+          end_date: Data zakończenia
+          secret: Głosowanie tajne
+          status: Status
+          yes: "Tak"
+          no: "Nie"
+          active: Aktywne
+          upcoming: Nadchodzące
+          finished: Zakończone
+          not_set: Nie ustawiono
+          vote: Oddaj głos
+          submit: Głosuj
+          already_voted: Już oddałeś głos w tym głosowaniu
       votes:
         create:
-          success: "Twój głos został zarejestrowany pomyślnie"
-          error: "Wystąpił problem podczas rejestracji Twojego głosu"
-        destroy:
-          success: "Twój głos został usunięty pomyślnie"
-          error: "Wystąpił problem podczas usuwania Twojego głosu"
-      vote_types:
-        positive: "Pozytywny"
-        negative: "Negatywny"
-        neutral: "Neutralny" 
+          error: Wystąpił problem podczas oddawania głosu
+          success: Głos został oddany pomyślnie
+    authorization_transfer:
+      explicit_voting_votes:
+        description: Głosy oddane w głosowaniach jawnych
+        title: Głosy w głosowaniach jawnych
+    votes:
+      create:
+        success: "Twój głos został zarejestrowany pomyślnie"
+        error: "Wystąpił problem podczas rejestracji Twojego głosu"
+      destroy:
+        success: "Twój głos został usunięty pomyślnie"
+        error: "Wystąpił problem podczas usuwania Twojego głosu"
+    vote_types:
+      positive: "Pozytywny"
+      negative: "Negatywny"
+      neutral: "Neutralny" 
