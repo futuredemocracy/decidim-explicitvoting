@@ -1,0 +1,14 @@
+en:
+  decidim:
+    explicit_voting:
+      votes:
+        create:
+          success: "Your vote has been registered successfully"
+          error: "There was a problem registering your vote"
+        destroy:
+          success: "Your vote has been removed successfully"
+          error: "There was a problem removing your vote"
+      vote_types:
+        positive: "Positive"
+        negative: "Negative"
+        neutral: "Neutral" 

@@ -1,0 +1,14 @@
+pl:
+  decidim:
+    explicit_voting:
+      votes:
+        create:
+          success: "Twój głos został zarejestrowany pomyślnie"
+          error: "Wystąpił problem podczas rejestracji Twojego głosu"
+        destroy:
+          success: "Twój głos został usunięty pomyślnie"
+          error: "Wystąpił problem podczas usuwania Twojego głosu"
+      vote_types:
+        positive: "Pozytywny"
+        negative: "Negatywny"
+        neutral: "Neutralny" 
