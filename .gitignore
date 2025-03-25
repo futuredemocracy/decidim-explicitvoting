@@ -37,3 +37,13 @@ packages/**/package-lock.json
 
 temporary_changelog.md
 .env
+
+# Ignore generated gem files
+*.gem
+
+# Ignore temporary database files
+/db/development
+/db/test
+
+# Ignore database files in root directory
+/db/
