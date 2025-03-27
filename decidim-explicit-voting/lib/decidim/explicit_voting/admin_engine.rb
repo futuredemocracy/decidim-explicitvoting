@@ -3,7 +3,7 @@
 module Decidim
   module ExplicitVoting
     class AdminEngine < ::Rails::Engine
-      isolate_namespace Decidim::ExplicitVoting::Admin
+      isolate_namespace ::Decidim::ExplicitVoting::Admin
 
       paths["db/migrate"] = nil
       paths["lib/tasks"] = nil
