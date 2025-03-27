@@ -29,8 +29,8 @@ pl:
             edit: Edytuj
             results: Wyniki
             protocol: Pobierz protokół
-            yes: "Tak"
-            no: "Nie"
+            yes: Tak
+            no: Nie
             active: Aktywne
             upcoming: Nadchodzące
             finished: Zakończone
@@ -67,8 +67,8 @@ pl:
           end_date: Data zakończenia
           secret: Głosowanie tajne
           status: Status
-          yes: "Tak"
-          no: "Nie"
+          yes: Tak
+          no: Nie
           active: Aktywne
           upcoming: Nadchodzące
           finished: Zakończone
@@ -81,20 +81,20 @@ pl:
           error: Wystąpił problem podczas oddawania głosu
           success: Głos został oddany pomyślnie
         destroy:
-          success: "Twój głos został usunięty pomyślnie"
-          error: "Wystąpił problem podczas usuwania Twojego głosu"
+          success: Twój głos został usunięty pomyślnie
+          error: Wystąpił problem podczas usuwania Twojego głosu
     authorization_transfer:
       explicit_voting_votes:
         description: Głosy oddane w głosowaniach jawnych
         title: Głosy w głosowaniach jawnych
     votes:
       create:
-        success: "Twój głos został zarejestrowany pomyślnie"
-        error: "Wystąpił problem podczas rejestracji Twojego głosu"
+        success: Twój głos został zarejestrowany pomyślnie
+        error: Wystąpił problem podczas rejestracji Twojego głosu
       destroy:
-        success: "Twój głos został usunięty pomyślnie"
-        error: "Wystąpił problem podczas usuwania Twojego głosu"
+        success: Twój głos został usunięty pomyślnie
+        error: Wystąpił problem podczas usuwania Twojego głosu
     vote_types:
-      positive: "Pozytywny"
-      negative: "Negatywny"
-      neutral: "Neutralny"
+      positive: Pozytywny
+      negative: Negatywny
+      neutral: Neutralny
