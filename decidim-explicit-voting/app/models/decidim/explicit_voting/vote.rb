@@ -5,15 +5,17 @@ module Decidim
     class Vote < ApplicationRecord
       belongs_to :voting, class_name: "Decidim::ExplicitVoting::Voting"
       belongs_to :voting_option, class_name: "Decidim::ExplicitVoting::VotingOption"
-      belongs_to :user, foreign_key: "decidim_user_id", class_name: "Decidim::User"
+      belongs_to :user, class_name: "Decidim::User"
 
       validates :voting, presence: true
       validates :voting_option, presence: true
       validates :user, presence: true
-      validates :voting_id, uniqueness: { scope: :decidim_user_id }
+      validates :user_id, uniqueness: { scope: :voting_id }
 
       validate :voting_is_active
       validate :voting_option_belongs_to_voting
+
+      scope :by_user, ->(user) { where(user: user) }
 
       private
 

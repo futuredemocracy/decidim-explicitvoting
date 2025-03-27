@@ -10,13 +10,12 @@ module Decidim
                foreign_key: "voting_option_id",
                dependent: :destroy
 
-      validates :name, presence: true
+      validates :title, presence: true
+      validates :description, presence: true
 
       default_scope { order(position: :asc) }
 
       def votes_count
-        return 0 if voting.secret? && !voting.finished?
-
         votes.count
       end
     end
