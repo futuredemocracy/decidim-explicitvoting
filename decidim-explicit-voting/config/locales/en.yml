@@ -34,6 +34,11 @@ en:
             active: Active
             upcoming: Upcoming
             finished: Finished
+            start_date: Start date
+            end_date: End date
+            secret: Secret
+            votes: Votes
+            status: Status
           new:
             title: New voting
             create: Create voting
@@ -62,8 +67,8 @@ en:
           end_date: End date
           secret: Secret voting
           status: Status
-          yes: "Yes"
-          no: "No"
+          yes: "Yes" # Ensuring it's correctly placed
+          no: "No"  # Ensuring it's correctly placed
           active: Active
           upcoming: Upcoming
           finished: Finished
@@ -75,6 +80,9 @@ en:
         create:
           error: There was a problem casting your vote
           success: Vote cast successfully
+        destroy:
+          success: "Your vote was successfully removed."
+          error: "There was a problem removing your vote."
     authorization_transfer:
       explicit_voting_votes:
         description: Votes cast in explicit votings
@@ -86,7 +94,7 @@ en:
       destroy:
         success: "Your vote has been removed successfully"
         error: "There was a problem removing your vote"
-      vote_types:
-        positive: "Positive"
-        negative: "Negative"
-        neutral: "Neutral" 
+    vote_types:
+      positive: "Positive"
+      negative: "Negative"
+      neutral: "Neutral"
