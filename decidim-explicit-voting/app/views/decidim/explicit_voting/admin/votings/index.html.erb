@@ -33,7 +33,7 @@
                 <%= l voting.end_date, format: :long %>
               </td>
               <td>
-                <%= voting.secret? ? t(".yes") : t(".no") %>
+                <%= voting.secret? ? t(".secret_yes") : t(".secret_no") %>
               </td>
               <td>
                 <%= voting.votes.count %>

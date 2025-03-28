@@ -44,8 +44,8 @@ en:
             status: Status
             votes: Votes
             secret: Secret
-            yes: "Yes"
-            no: "No"
+            secret_yes: "Yes"
+            secret_no: "No"
           new:
             title: New voting
             create: Create voting
@@ -92,8 +92,8 @@ en:
           vote: Cast your vote
           submit: Vote
           already_voted: You have already voted in this voting
-          yes: "Yes"
-          no: "No"
+          secret_yes: "Yes"
+          secret_no: "No"
       votes:
         create:
           error: There was a problem casting your vote

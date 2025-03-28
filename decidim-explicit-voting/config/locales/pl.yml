@@ -29,8 +29,8 @@ pl:
             edit: Edytuj
             results: Wyniki
             protocol: Pobierz protokół
-            yes: Tak
-            no: Nie
+            secret_yes: Tak
+            secret_no: Nie
             active: Aktywne
             upcoming: Nadchodzące
             finished: Zakończone
@@ -67,8 +67,8 @@ pl:
           end_date: Data zakończenia
           secret: Głosowanie tajne
           status: Status
-          yes: Tak
-          no: Nie
+          secret_yes: Tak
+          secret_no: Nie
           active: Aktywne
           upcoming: Nadchodzące
           finished: Zakończone
