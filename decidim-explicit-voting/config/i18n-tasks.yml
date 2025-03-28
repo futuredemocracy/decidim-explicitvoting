@@ -1,0 +1,66 @@
+# Plik: ~/git/decidim-explicitvoting/decidim-explicit-voting/config/i18n-tasks.yml
+
+# Język bazowy
+base_locale: en
+
+# Skąd czytać tłumaczenia
+data:
+  read:
+    # 1. Z bieżącego modułu
+    - config/locales/%{locale}.yml
+    # 2. Z gema decidim-core (wymaga uruchomienia w kontekście Bundlera)
+    - "<%= Gem.loaded_specs['decidim-core'].full_gem_path %>/config/locales/%{locale}.yml"
+
+  yaml:
+    write:
+      line_width: -1 # Nie zawijaj linii
+
+# Gdzie szukać użycia kluczy (w bieżącym module)
+search:
+  paths:
+    - app
+    - lib
+  # Gdzie rozwiązywać klucze względne (np. t(".key"))
+  relative_roots:
+    - app/controllers
+    - app/helpers
+    - app/mailers
+    - app/presenters
+    - app/services
+    - app/views
+    - app/cells
+  strict: false # Pozwala na zgadywanie dynamicznych kluczy
+
+# Klucze do ignorowania przy sprawdzaniu BRAKUJĄCYCH tłumaczeń
+ignore_missing:
+  # WORKAROUND dla problemu z i18n-tasks v1.0.15 (GitHub Issue: https://github.com/glebm/i18n-tasks/issues/628)
+  - decidim.explicit_voting.admin.votings.index.yes
+  - decidim.explicit_voting.admin.votings.index.no
+  - decidim.explicit_voting.votings.show.yes
+  - decidim.explicit_voting.votings.show.no
+
+  # Standardowe klucze Decidim
+  - components.*
+  - browse_resource
+  - email_subject
+  - explanation
+
+# Klucze do ignorowania przy sprawdzaniu NIEUŻYWANYCH tłumaczeń
+ignore_unused:
+  # Standardowe klucze Decidim
+  - devise.*
+  - activemodel.*
+  - activerecord.*
+  - decidim.profiles.show.members
+
+  # Klucze używane dynamicznie w naszym module
+  - decidim.components.explicit_voting.name
+  - decidim.authorization_transfer.explicit_voting_votes.*
+  - decidim.vote_types.*
+  - decidim.explicit_voting.admin.voting_options.*
+  - decidim.explicit_voting.admin.votings.*
+  - decidim.explicit_voting.votings.*
+  - decidim.explicit_voting.votes.*
+  # Klucze używane w ustawieniach komponentu
+  - decidim.components.explicit_voting.settings.global.announcement
+  - decidim.components.explicit_voting.settings.step.announcement 

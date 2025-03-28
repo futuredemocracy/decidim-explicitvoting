@@ -1,8 +1,12 @@
 pl:
   decidim:
+    authorization_transfer:
+      explicit_voting_votes:
+        description: Głosy oddane w jawnym głosowaniu
+        title: Głosy w jawnym głosowaniu
     components:
       explicit_voting:
-        name: Głosowanie Jawne
+        name: Głosowanie jawne
         settings:
           global:
             announcement: Ogłoszenie
@@ -13,14 +17,11 @@ pl:
         votings:
           create:
             invalid: Wystąpił problem podczas tworzenia głosowania
+            error: Wystąpił problem podczas tworzenia głosowania
             success: Głosowanie zostało utworzone pomyślnie
           destroy:
+            error: Wystąpił problem podczas usuwania głosowania
             success: Głosowanie zostało usunięte pomyślnie
-          edit:
-            title: Edytuj głosowanie
-            update: Aktualizuj głosowanie
-          form:
-            title: Informacje ogólne
           index:
             title: Głosowania
             new: Nowe głosowanie
@@ -29,8 +30,8 @@ pl:
             edit: Edytuj
             results: Wyniki
             protocol: Pobierz protokół
-            secret_yes: Tak
-            secret_no: Nie
+            secret_yes: "Tak"
+            secret_no: "Nie"
             active: Aktywne
             upcoming: Nadchodzące
             finished: Zakończone
@@ -44,10 +45,21 @@ pl:
             create: Utwórz głosowanie
           update:
             invalid: Wystąpił problem podczas aktualizacji głosowania
+            error: Wystąpił problem podczas aktualizacji głosowania
             success: Głosowanie zostało zaktualizowane pomyślnie
         voting_form:
           errors:
             end_date_after_start_date: Data zakończenia musi być późniejsza niż data rozpoczęcia
+        voting_options:
+          create:
+            error: Wystąpił problem podczas tworzenia opcji głosowania
+            success: Opcja głosowania została utworzona pomyślnie
+          destroy:
+            error: Wystąpił problem podczas usuwania opcji głosowania
+            success: Opcja głosowania została usunięta pomyślnie
+          update:
+            error: Wystąpił problem podczas aktualizacji opcji głosowania
+            success: Opcja głosowania została zaktualizowana pomyślnie
       votings:
         index:
           title: Głosowania
@@ -67,8 +79,8 @@ pl:
           end_date: Data zakończenia
           secret: Głosowanie tajne
           status: Status
-          secret_yes: Tak
-          secret_no: Nie
+          secret_yes: "Tak"
+          secret_no: "Nie"
           active: Aktywne
           upcoming: Nadchodzące
           finished: Zakończone
@@ -81,20 +93,16 @@ pl:
           error: Wystąpił problem podczas oddawania głosu
           success: Głos został oddany pomyślnie
         destroy:
-          success: Twój głos został usunięty pomyślnie
-          error: Wystąpił problem podczas usuwania Twojego głosu
-    authorization_transfer:
-      explicit_voting_votes:
-        description: Głosy oddane w głosowaniach jawnych
-        title: Głosy w głosowaniach jawnych
-    votes:
-      create:
-        success: Twój głos został zarejestrowany pomyślnie
-        error: Wystąpił problem podczas rejestracji Twojego głosu
-      destroy:
-        success: Twój głos został usunięty pomyślnie
-        error: Wystąpił problem podczas usuwania Twojego głosu
+          success: Twój głos został pomyślnie usunięty.
+          error: Wystąpił problem podczas usuwania głosu.
     vote_types:
       positive: Pozytywny
       negative: Negatywny
       neutral: Neutralny
+    votes:
+      create:
+        success: Twój głos został zarejestrowany pomyślnie
+        error: Wystąpił problem podczas rejestracji głosu
+      destroy:
+        success: Twój głos został usunięty pomyślnie
+        error: Wystąpił problem podczas usuwania głosu

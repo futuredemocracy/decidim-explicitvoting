@@ -18,16 +18,11 @@ en:
         votings:
           create:
             invalid: There was a problem creating the voting
-            success: Voting created successfully
             error: There was a problem creating the voting
+            success: Voting created successfully
           destroy:
-            success: Voting deleted successfully
             error: There was a problem deleting the voting
-          edit:
-            title: Edit voting
-            update: Update voting
-          form:
-            title: General information
+            success: Voting deleted successfully
           index:
             title: Votings
             new: New voting
@@ -36,36 +31,36 @@ en:
             edit: Edit
             results: Results
             protocol: Download protocol
+            secret_yes: "Yes"
+            secret_no: "No"
             active: Active
             upcoming: Upcoming
             finished: Finished
             start_date: Start date
             end_date: End date
-            status: Status
-            votes: Votes
             secret: Secret
-            secret_yes: "Yes"
-            secret_no: "No"
+            votes: Votes
+            status: Status
           new:
             title: New voting
             create: Create voting
           update:
             invalid: There was a problem updating the voting
-            success: Voting updated successfully
             error: There was a problem updating the voting
+            success: Voting updated successfully
         voting_form:
           errors:
             end_date_after_start_date: End date must be after start date
         voting_options:
           create:
-            success: Voting option was successfully created
             error: There was a problem creating the voting option
-          update:
-            success: Voting option was successfully updated
-            error: There was a problem updating the voting option
+            success: Voting option was successfully created
           destroy:
-            success: Voting option was successfully deleted
             error: There was a problem deleting the voting option
+            success: Voting option was successfully deleted
+          update:
+            error: There was a problem updating the voting option
+            success: Voting option was successfully updated
       votings:
         index:
           title: Votings
@@ -85,6 +80,8 @@ en:
           end_date: End date
           secret: Secret voting
           status: Status
+          secret_yes: "Yes"
+          secret_no: "No"
           active: Active
           upcoming: Upcoming
           finished: Finished
@@ -92,8 +89,6 @@ en:
           vote: Cast your vote
           submit: Vote
           already_voted: You have already voted in this voting
-          secret_yes: "Yes"
-          secret_no: "No"
       votes:
         create:
           error: There was a problem casting your vote
