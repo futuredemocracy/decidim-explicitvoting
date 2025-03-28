@@ -7,6 +7,9 @@ Decidim.register_component(:explicit_voting) do |component|
 
   component.permissions_class_name = "Decidim::ExplicitVoting::Permissions"
 
+  # These actions permissions can be configured in the admin panel
+  component.actions = %w(create read update destroy)
+
   component.settings(:global) do |settings|
     settings.attribute :announcement, type: :text, translated: true, editor: true
   end
@@ -40,7 +43,23 @@ Decidim.register_component(:explicit_voting) do |component|
       name: Decidim::Components::Namer.new(participatory_space.organization.available_locales, :explicit_voting).i18n_name,
       manifest_name: :explicit_voting,
       published_at: Time.current,
-      participatory_space: participatory_space
+      participatory_space: participatory_space,
+      permissions: {
+        "create" => {
+          "authorization_handlers" => {
+            "default" => {
+              "options" => {
+                "permissions" => {
+                  "create" => true,
+                  "read" => true,
+                  "update" => true,
+                  "destroy" => true
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
     component = Decidim.traceability.perform_action!(

@@ -9,5 +9,6 @@ module Decidim
   module ExplicitVoting
     autoload :Vote, "decidim/explicit_voting/vote"
     autoload :Voting, "decidim/explicit_voting/voting"
+    autoload :Permissions, "decidim/explicit_voting/permissions"
   end
 end 

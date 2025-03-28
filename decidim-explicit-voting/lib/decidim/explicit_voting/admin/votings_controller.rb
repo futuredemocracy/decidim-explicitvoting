@@ -5,18 +5,22 @@ module Decidim
     module Admin
       class VotingsController < Decidim::Admin::ApplicationController
         def index
+          enforce_permission_to :read, :voting
           @votings = collection
         end
 
         def show
+          enforce_permission_to :read, :voting, voting: resource
           @voting = resource
         end
 
         def new
+          enforce_permission_to :create, :voting
           @voting = Decidim::ExplicitVoting::Voting.new
         end
 
         def create
+          enforce_permission_to :create, :voting
           @voting = Decidim::ExplicitVoting::Voting.new(voting_params)
           @voting.component = current_component
 
@@ -30,10 +34,12 @@ module Decidim
         end
 
         def edit
+          enforce_permission_to :update, :voting, voting: resource
           @voting = resource
         end
 
         def update
+          enforce_permission_to :update, :voting, voting: resource
           @voting = resource
           if @voting.update(voting_params)
             flash[:notice] = I18n.t("votings.update.success", scope: "decidim.explicit_voting.admin")
@@ -45,6 +51,7 @@ module Decidim
         end
 
         def destroy
+          enforce_permission_to :destroy, :voting, voting: resource
           @voting = resource
           if @voting.destroy
             flash[:notice] = I18n.t("votings.destroy.success", scope: "decidim.explicit_voting.admin")
@@ -55,10 +62,12 @@ module Decidim
         end
 
         def results
+          enforce_permission_to :read, :voting, voting: resource
           @voting = resource
         end
 
         def protocol
+          enforce_permission_to :read, :voting, voting: resource
           @voting = resource
         end
 

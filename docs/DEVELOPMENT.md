@@ -226,3 +226,116 @@ RAILS_ENV=development RAILS_MASTER_KEY=1234567890abcdef1234567890abcdef DATABASE
 4. Używaj `SKIP_SEEDS=true` aby pominąć przykładowe dane
 5. W przypadku problemów z bazą danych, sprawdź uprawnienia użytkownika PostgreSQL
 6. Upewnij się, że wszystkie zmienne środowiskowe są ustawione przed uruchomieniem komend 
+
+## Konfiguracja uprawnień
+
+### Struktura uprawnień
+
+Moduł używa dwóch klas uprawnień:
+
+1. `Decidim::ExplicitVoting::Admin::Permissions` - dla panelu administracyjnego
+2. `Decidim::ExplicitVoting::Permissions` - dla głównego modułu
+
+### Konfiguracja uprawnień komponentu
+
+Uprawnienia komponentu są konfigurowane w następujących miejscach:
+
+1. W pliku `lib/decidim/explicit_voting/component.rb`:
+```ruby
+component.permissions_class_name = "Decidim::ExplicitVoting::Permissions"
+component.actions = %w(create read update destroy)
+```
+
+2. W bazie danych poprzez ustawienie uprawnień dla komponentu:
+```ruby
+component.update!(
+  permissions: {
+    "admin" => {
+      "authorization_handlers" => {
+        "default" => {
+          "options" => {
+            "permissions" => {
+              "manage" => true,
+              "create" => true,
+              "read" => true,
+              "update" => true,
+              "destroy" => true
+            }
+          }
+        }
+      }
+    }
+  }
+)
+```
+
+### Kontrolery administracyjne
+
+Kontrolery administracyjne wymagają następujących concernów:
+
+1. `Decidim::ParticipatorySpaceContext` - dla dostępu do przestrzeni partycypacyjnej
+2. `Decidim::NeedsComponent` - dla dostępu do komponentu w kontrolerze
+
+Przykład implementacji kontrolera bazowego:
+```ruby
+class ApplicationController < Decidim::Admin::ApplicationController
+  include Decidim::ParticipatorySpaceContext
+  include Decidim::NeedsComponent
+
+  def permissions_context
+    super.merge(
+      current_participatory_space: current_participatory_space
+    )
+  end
+
+  def permission_class_chain
+    [
+      Decidim::ExplicitVoting::Admin::Permissions,
+      Decidim::Admin::Permissions
+    ]
+  end
+end
+```
+
+### Rozwiązywanie problemów z uprawnieniami
+
+1. Sprawdź, czy użytkownik jest administratorem:
+```ruby
+user = Decidim::User.find_by(email: "admin@example.org")
+puts "Admin?: #{user.admin?}"
+```
+
+2. Sprawdź uprawnienia komponentu:
+```ruby
+component = Decidim::Component.find_by(manifest_name: "explicit_voting")
+puts "Uprawnienia: #{component.permissions.inspect}"
+```
+
+3. Sprawdź, czy użytkownik jest administratorem przestrzeni:
+```ruby
+space = component.participatory_space
+puts "Space admin?: #{space.admins.include?(user)}"
+```
+
+4. Sprawdź, czy klasa uprawnień jest załadowana:
+```ruby
+begin
+  puts "Klasa uprawnień istnieje?: #{defined?(Decidim::ExplicitVoting::Permissions) != nil}"
+rescue => e
+  puts "Błąd sprawdzania klasy uprawnień: #{e.message}"
+end
+```
+
+### Najczęstsze problemy
+
+1. Brak uprawnień "manage" w konfiguracji komponentu
+2. Niepoprawna implementacja klasy uprawnień
+3. Brak wymaganych concernów w kontrolerze
+4. Niepoprawna konfiguracja przestrzeni partycypacyjnej
+
+### Rozwiązywanie problemów
+
+1. Zrestartuj serwer Rails po zmianach w uprawnieniach
+2. Sprawdź logi aplikacji w `development_app/log/development.log`
+3. Użyj konsoli Rails do debugowania uprawnień
+4. Upewnij się, że wszystkie wymagane pliki są w odpowiednich lokalizacjach 
