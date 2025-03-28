@@ -271,22 +271,17 @@ component.update!(
 
 ### Kontrolery administracyjne
 
-Kontrolery administracyjne wymagają następujących concernów:
+Kontrolery administracyjne powinny dziedziczyć od `Decidim::Admin::Components::BaseController`, który zapewnia:
 
-1. `Decidim::ParticipatorySpaceContext` - dla dostępu do przestrzeni partycypacyjnej
-2. `Decidim::NeedsComponent` - dla dostępu do komponentu w kontrolerze
+1. Dostęp do komponentu poprzez `current_component`
+2. Dostęp do przestrzeni partycypacyjnej poprzez `current_participatory_space`
+3. Podstawowe uprawnienia i autoryzację
+4. Odpowiedni layout i helpers
 
 Przykład implementacji kontrolera bazowego:
 ```ruby
-class ApplicationController < Decidim::Admin::ApplicationController
-  include Decidim::ParticipatorySpaceContext
-  include Decidim::NeedsComponent
-
-  def permissions_context
-    super.merge(
-      current_participatory_space: current_participatory_space
-    )
-  end
+class ApplicationController < Decidim::Admin::Components::BaseController
+  layout "decidim/admin/application"
 
   def permission_class_chain
     [
@@ -339,3 +334,29 @@ end
 2. Sprawdź logi aplikacji w `development_app/log/development.log`
 3. Użyj konsoli Rails do debugowania uprawnień
 4. Upewnij się, że wszystkie wymagane pliki są w odpowiednich lokalizacjach 
+
+Podsumowanie Debugowania Komponentu decidim-explicit-voting
+Problem: Podczas tworzenia komponentu decidim-explicit-voting napotkano serię błędów uniemożliwiających poprawne działanie panelu administracyjnego i interakcję z bazą danych.
+
+Sekwencja Błędów i Zastosowane Rozwiązania:
+
+Błędy Konfiguracji Kontrolera Admina:
+
+Błędy: NameError: uninitialized constant Decidim::NeedsComponent, NoMethodError: undefined method 'belongs_to' for class ...Controller.
+Przyczyna: Próba użycia nieistniejącego modułu (NeedsComponent) oraz niepoprawne włączenie modułu Decidim::HasComponent (przeznaczonego dla modeli ActiveRecord) do kontrolera. Błędne dziedziczenie kontrolera bazowego.
+Rozwiązanie: Poprawienie dziedziczenia głównego kontrolera administracyjnego komponentu (Admin::ApplicationController) na Decidim::Admin::Components::BaseController. Usunięcie niepoprawnego include Decidim::HasComponent z kontrolera.
+Błąd Autoryzacji w Panelu Admina:
+
+Błąd: You are not authorized to perform this action. podczas próby dostępu do zarządzania komponentem.
+Przyczyna: Brak zdefiniowanej reguły w klasie uprawnień (Admin::Permissions) pozwalającej na wykonanie akcji :read na zasobie :participatory_space. Ta podstawowa weryfikacja była wymagana przez kontroler bazowy Decidim przed udzieleniem dostępu do widoków zarządzania komponentem.
+Rozwiązanie: Dodanie w metodzie permissions (w klasie Decidim::ExplicitVoting::Admin::Permissions dziedziczącej z Decidim::DefaultPermissions) warunku sprawdzającego subject == :participatory_space i action == :read, który przyznaje dostęp (allow!) administratorom (globalnym lub przestrzeni).
+Błąd Braku Tabeli w Bazie Danych:
+
+Błąd: PG::UndefinedTable: ERROR: relation "decidim_explicit_voting_votings" does not exist.
+Przyczyna: Niezgodność nazwy tabeli zdefiniowanej w pliku migracji (decidim_explicit_votings - liczba pojedyncza) z oczekiwaniami ActiveRecord opartymi na konwencji Rails i nazwie modelu Voting (decidim_explicit_voting_votings - liczba mnoga).
+Rozwiązanie: Poprawienie pliku migracji: zmiana nazwy tabeli głównej na decidim_explicit_voting_votings oraz aktualizacja odwołań (kluczy obcych foreign_key: { to_table: ... }) w definicjach pozostałych tabel (_options, _votes, _protocols). Następnie cofnięcie błędnej migracji (bin/rails db:rollback STEP=1) i ponowne uruchomienie poprawionej migracji (bin/rails db:migrate).
+Problemy z Inicjalizacją Bazy Danych i Odczytem Credentials:
+
+Błędy: ERROR: relation "schema_migrations" does not exist (w psql), ActiveRecord::ConnectionNotEstablished: ... no password supplied (podczas db:prepare), ActiveSupport::MessageEncryptor::InvalidMessage (podczas db:prepare).
+Przyczyna: Baza danych decidim_development nie była poprawnie zainicjowana dla aplikacji Rails (brak kluczowej tabeli schema_migrations). Kolejne błędy podczas próby wykonania db:prepare (problem z hasłem, a następnie z deszyfrowaniem credentials mimo podania poprawnego klucza RAILS_MASTER_KEY odczytanego z config/master.key) były najprawdopodobniej spowodowane przez zakłócenia ze strony preloadera Spring lub nieaktualny stan środowiska wykonawczego zadania Rake. Wykonanie bin/rails credentials:edit potwierdziło, że klucz i plik credentials były w rzeczywistości poprawne.
+Rozwiązanie: Użycie polecenia bin/rails db:prepare (z odpowiednimi zmiennymi RAILS_ENV i RAILS_MASTER_KEY, choć ostatecznie zadziałało bez RAILS_MASTER_KEY dzięki config/master.key) w celu poprawnego zainicjowania bazy (wczytania schema.rb, utworzenia schema_migrations) i uruchomienia wszystkich migracji, w tym poprawionej migracji komponentu. Kluczowe było kilkukrotne próbowanie i upewnienie się, że Spring (bin/spring stop) nie zakłóca procesu.
