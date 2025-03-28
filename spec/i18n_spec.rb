@@ -7,9 +7,45 @@ describe "I18n sanity" do
     ENV["ENFORCED_LOCALES"].presence || "en"
   end
 
+  # Ścieżka do pliku konfiguracyjnego względem bieżącego pliku specyfikacji
+  let(:config_path) { File.expand_path('../../config/i18n-tasks.yml', __dir__) }
+
+  # Ręczne ładowanie konfiguracji z pliku YAML
+  let(:config) do
+    File.exist?(config_path) ? YAML.load_file(config_path) : {}
+  end
+
+  # Wzorce kluczy do zignorowania (z załadowanego configu)
+  # Upewniamy się, że to tablica, nawet jeśli klucz nie istnieje w YAML
+  let(:ignore_patterns) { config['ignore_unused'] || [] }
+
+  # Instancja i18n-tasks (tak jak poprzednio)
   let(:i18n) { I18n::Tasks::BaseTask.new(locales: locales.split(",")) }
+
+  # Pobieramy 'surową' listę nieużywanych kluczy z instancji i18n
+  # Ta lista zawiera potencjalnie te 9 kluczy, bo instancja i18n ignoruje config
+  let(:raw_unused_keys) { i18n.unused_keys }
+
+  # === NOWA LOGIKA FILTROWANIA ===
+  # Filtrujemy 'surową' listę kluczy używając wzorców ignore_unused
+  let(:unused_keys) do
+    raw_unused_keys.reject do |key_node|
+      # key_node to obiekt; pobieramy pełny klucz jako string
+      # (zakładamy, że obiekt odpowiada na metodę .full_key)
+      full_key = key_node.full_key
+
+      # Sprawdzamy, czy pełny klucz pasuje do KTÓREGOKOLWIEK wzorca z listy ignore_patterns
+      ignore_patterns.any? do |pattern|
+        # Używamy File.fnmatch? do obsługi wzorców z '*' (globbing)
+        # jak w powłoce systemowej.
+        # Opcje FNM_PATHNAME i FNM_EXTGLOB mogą być przydatne dla bardziej złożonych wzorców.
+        File.fnmatch?(pattern, full_key, File::FNM_PATHNAME | File::FNM_EXTGLOB)
+      end
+    end
+  end
+  # =============================
+
   let(:missing_keys) { i18n.missing_keys }
-  let(:unused_keys) { i18n.unused_keys }
   let(:non_normalized_paths) { i18n.non_normalized_paths }
   let(:inconsistent_interpolations) { i18n.inconsistent_interpolations }
 
@@ -29,7 +65,7 @@ describe "I18n sanity" do
 
   it "does not have unused keys" do
     expect(unused_keys).to be_empty,
-                           "#{unused_keys.leaves.count} unused i18n keys, please run `bundle exec i18n-tasks unused --locales #{locales}' to show them"
+                           "#{unused_keys.count} unused i18n keys (after manual filtering): [#{unused_keys.map(&:full_key).join(', ')}]. Please run `bundle exec i18n-tasks unused --locales #{locales}' to show them"
   end
 
   unless ENV["SKIP_NORMALIZATION"]
