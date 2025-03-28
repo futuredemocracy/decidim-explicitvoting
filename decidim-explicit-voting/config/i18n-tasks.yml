@@ -6,10 +6,8 @@ base_locale: en
 # Skąd czytać tłumaczenia
 data:
   read:
-    # 1. Z bieżącego modułu
+    # Tylko z naszego modułu
     - config/locales/%{locale}.yml
-    # 2. Z gema decidim-core (wymaga uruchomienia w kontekście Bundlera)
-    - "<%= Gem.loaded_specs['decidim-core'].full_gem_path %>/config/locales/%{locale}.yml"
 
   yaml:
     write:
@@ -52,11 +50,13 @@ ignore_unused:
   - activemodel.*
   - activerecord.*
   - decidim.profiles.show.members
+  - en
 
   # Klucze używane dynamicznie w naszym module
   - decidim.components.explicit_voting.name
   - decidim.authorization_transfer.explicit_voting_votes.*
   - decidim.vote_types.*
+  - decidim.votes.*
   - decidim.explicit_voting.admin.voting_options.*
   - decidim.explicit_voting.admin.votings.*
   - decidim.explicit_voting.votings.*

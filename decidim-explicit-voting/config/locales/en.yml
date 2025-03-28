@@ -15,39 +15,6 @@ en:
             announcement: Announcement
     explicit_voting:
       admin:
-        votings:
-          create:
-            invalid: There was a problem creating the voting
-            error: There was a problem creating the voting
-            success: Voting created successfully
-          destroy:
-            error: There was a problem deleting the voting
-            success: Voting deleted successfully
-          index:
-            title: Votings
-            new: New voting
-            confirm_destroy: Are you sure you want to delete this voting?
-            destroy: Delete
-            edit: Edit
-            results: Results
-            protocol: Download protocol
-            secret_yes: "Yes"
-            secret_no: "No"
-            active: Active
-            upcoming: Upcoming
-            finished: Finished
-            start_date: Start date
-            end_date: End date
-            secret: Secret
-            votes: Votes
-            status: Status
-          new:
-            title: New voting
-            create: Create voting
-          update:
-            invalid: There was a problem updating the voting
-            error: There was a problem updating the voting
-            success: Voting updated successfully
         voting_form:
           errors:
             end_date_after_start_date: End date must be after start date
@@ -61,49 +28,82 @@ en:
           update:
             error: There was a problem updating the voting option
             success: Voting option was successfully updated
-      votings:
-        index:
-          title: Votings
-          active: Active
-          upcoming: Upcoming
-          finished: Finished
-          end_date: End date
-          votes: Votes
-          hidden: Hidden
-        show:
-          description: Description
-          information: Information
-          results: Results
-          option: Option
-          votes: Votes
-          start_date: Start date
-          end_date: End date
-          secret: Secret voting
-          status: Status
-          secret_yes: "Yes"
-          secret_no: "No"
-          active: Active
-          upcoming: Upcoming
-          finished: Finished
-          not_set: Not set
-          vote: Cast your vote
-          submit: Vote
-          already_voted: You have already voted in this voting
+        votings:
+          create:
+            error: There was a problem creating the voting
+            invalid: There was a problem creating the voting
+            success: Voting created successfully
+          destroy:
+            error: There was a problem deleting the voting
+            success: Voting deleted successfully
+          index:
+            active: Active
+            confirm_destroy: Are you sure you want to delete this voting?
+            destroy: Delete
+            edit: Edit
+            end_date: End date
+            finished: Finished
+            new: New voting
+            protocol: Download protocol
+            results: Results
+            secret: Secret
+            secret_no: 'No'
+            secret_yes: 'Yes'
+            start_date: Start date
+            status: Status
+            title: Votings
+            upcoming: Upcoming
+            votes: Votes
+          new:
+            create: Create voting
+            title: New voting
+          update:
+            error: There was a problem updating the voting
+            invalid: There was a problem updating the voting
+            success: Voting updated successfully
       votes:
         create:
           error: There was a problem casting your vote
           success: Vote cast successfully
         destroy:
-          success: Your vote was successfully removed.
           error: There was a problem removing your vote.
+          success: Your vote was successfully removed.
+      votings:
+        index:
+          active: Active
+          end_date: End date
+          finished: Finished
+          hidden: Hidden
+          title: Votings
+          upcoming: Upcoming
+          votes: Votes
+        show:
+          active: Active
+          already_voted: You have already voted in this voting
+          description: Description
+          end_date: End date
+          finished: Finished
+          information: Information
+          not_set: Not set
+          option: Option
+          results: Results
+          secret: Secret voting
+          secret_no: 'No'
+          secret_yes: 'Yes'
+          start_date: Start date
+          status: Status
+          submit: Vote
+          upcoming: Upcoming
+          vote: Cast your vote
+          votes: Votes
     vote_types:
-      positive: Positive
       negative: Negative
       neutral: Neutral
+      positive: Positive
     votes:
       create:
-        success: Your vote has been registered successfully
         error: There was a problem registering your vote
+        success: Your vote has been registered successfully
       destroy:
-        success: Your vote has been removed successfully
         error: There was a problem removing your vote
+        success: Your vote has been removed successfully
