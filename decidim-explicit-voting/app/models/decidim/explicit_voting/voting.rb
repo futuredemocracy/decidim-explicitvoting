@@ -14,6 +14,8 @@ module Decidim
 
       belongs_to :component, foreign_key: "decidim_component_id", class_name: "Decidim::Component"
 
+      delegate :organization, to: :component
+
       has_many :options,
                class_name: "Decidim::ExplicitVoting::VotingOption",
                foreign_key: "voting_id",
@@ -29,8 +31,8 @@ module Decidim
                foreign_key: "voting_id",
                dependent: :destroy
 
-      validates :title, translatable_presence: true
-      validates :description, translatable_presence: true
+      #validates :title, translatable_presence: true
+      #validates :description, translatable_presence: true
       validates :end_date, presence: true
 
       def active?
@@ -47,6 +49,10 @@ module Decidim
 
       def finished?
         Time.current > end_date
+      end
+
+      def current_organization
+        organization
       end
     end
   end

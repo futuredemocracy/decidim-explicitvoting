@@ -14,8 +14,17 @@ module Decidim
         attribute :secret, Boolean
 
         validates :title, translatable_presence: true
+        validates :description, translatable_presence: true
         validates :end_date, presence: true
         validate :end_date_after_start_date
+
+        def map_model(model)
+          self.title = model.title
+          self.description = model.description
+          self.start_date = model.start_date
+          self.end_date = model.end_date
+          self.secret = model.secret
+        end
 
         private
 
