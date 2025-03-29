@@ -79,6 +79,10 @@ module Decidim
           @collection ||= Decidim::ExplicitVoting::Voting.where(component: current_component)
         end
 
+        def votings
+          collection
+        end
+
         def resource
           @resource ||= collection.find(params[:id])
         end

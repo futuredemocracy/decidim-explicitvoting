@@ -3,6 +3,8 @@
 module Decidim
   module ExplicitVoting
     class Voting < ApplicationRecord
+      self.table_name = "decidim_explicit_votings"
+
       include Decidim::HasComponent
       include Decidim::Traceable
       include Decidim::Loggable

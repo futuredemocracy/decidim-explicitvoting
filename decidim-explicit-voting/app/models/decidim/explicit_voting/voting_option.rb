@@ -3,6 +3,8 @@
 module Decidim
   module ExplicitVoting
     class VotingOption < ApplicationRecord
+      self.table_name = "decidim_explicit_voting_options"
+
       belongs_to :voting, class_name: "Decidim::ExplicitVoting::Voting"
 
       has_many :votes,
