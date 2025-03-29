@@ -35,13 +35,17 @@ module Decidim
       validate :validate_title_presence
       validate :validate_description_presence
       
+      def to_s
+        Decidim::TranslatableAttributes.translated_attribute(title)
+      end
+      
       def method_missing(method, *args, &block)
         if method.to_s =~ /^(title|description)_([a-z]{2})$/
           field_name = $1
           locale = $2
           
           translations = self.send(field_name.to_sym)
-          return translations[locale] if translations
+          return Decidim::TranslatableAttributes.translated_attribute(translations, nil, locale) if translations
           
           return ""
         end
