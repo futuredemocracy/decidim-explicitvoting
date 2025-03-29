@@ -25,6 +25,30 @@ module Decidim
           self.end_date = model.end_date
           self.secret = model.secret
         end
+        
+        # Metoda pomocnicza do pobierania wszystkich tłumaczeń tytułu
+        def title_hash
+          title_as_hash = {}
+          
+          current_organization.available_locales.each do |locale|
+            title_attr = "title_#{locale}"
+            title_as_hash[locale] = send(title_attr) if send(title_attr).present?
+          end
+          
+          title_as_hash
+        end
+        
+        # Metoda pomocnicza do pobierania wszystkich tłumaczeń opisu
+        def description_hash
+          description_as_hash = {}
+          
+          current_organization.available_locales.each do |locale|
+            desc_attr = "description_#{locale}"
+            description_as_hash[locale] = send(desc_attr) if send(desc_attr).present?
+          end
+          
+          description_as_hash
+        end
 
         private
 

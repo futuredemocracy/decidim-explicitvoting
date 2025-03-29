@@ -3,6 +3,8 @@
 module Decidim
   module ExplicitVoting
     class Vote < ApplicationRecord
+      self.table_name = "decidim_explicit_votes"
+      
       belongs_to :voting, class_name: "Decidim::ExplicitVoting::Voting"
       belongs_to :voting_option, class_name: "Decidim::ExplicitVoting::VotingOption"
       belongs_to :user, foreign_key: "decidim_user_id", class_name: "Decidim::User"

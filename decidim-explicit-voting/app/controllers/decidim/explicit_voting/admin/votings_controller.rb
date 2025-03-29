@@ -29,34 +29,17 @@ module Decidim
           enforce_permission_to :create, :voting
           @form = form(VotingForm).from_params(params)
 
-          if @form.valid?
-            @voting = Decidim::ExplicitVoting::Voting.new(component: current_component)
-
-            attributes_from_form = @form.attributes.slice(
-              "title",
-              "description",
-              "start_date",
-              "end_date",
-              "secret"
-            )
-            @voting.assign_attributes(attributes_from_form)
-
-            if @voting.save!
+          CreateVoting.call(@form) do
+            on(:ok) do
               flash[:notice] = I18n.t("votings.create.success", scope: "decidim.explicit_voting.admin")
               redirect_to votings_path
             end
-          else
-            flash.now[:alert] = I18n.t("votings.create.error", scope: "decidim.explicit_voting.admin")
-            render :new, status: :unprocessable_entity
+
+            on(:invalid) do
+              flash.now[:alert] = I18n.t("votings.create.error", scope: "decidim.explicit_voting.admin")
+              render :new, status: :unprocessable_entity
+            end
           end
-        rescue ActiveRecord::RecordInvalid => e
-          Rails.logger.error("Admin Votings Create Validation failed: #{e.message}")
-          flash.now[:alert] = I18n.t(
-            "votings.create.error",
-            scope: "decidim.explicit_voting.admin",
-            error: e.record.errors.full_messages.join(", ")
-          )
-          render :new, status: :unprocessable_entity
         end
 
         def edit
