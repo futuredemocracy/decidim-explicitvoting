@@ -18,17 +18,29 @@ module Decidim
 
         def new
           enforce_permission_to :create, :voting
-          @voting = Decidim::ExplicitVoting::Voting.new
+          @form = form(VotingForm).instance
         end
 
         def create
           enforce_permission_to :create, :voting
-          @voting = Decidim::ExplicitVoting::Voting.new(voting_params)
-          @voting.component = current_component
+          @form = form(VotingForm).from_params(params)
 
-          if @voting.save
-            flash[:notice] = I18n.t("votings.create.success", scope: "decidim.explicit_voting.admin")
-            redirect_to votings_path
+          if @form.valid?
+            @voting = Decidim::ExplicitVoting::Voting.new
+            @voting.component = current_component
+            @voting.title = @form.title
+            @voting.description = @form.description
+            @voting.start_date = @form.start_date
+            @voting.end_date = @form.end_date
+            @voting.secret = @form.secret
+
+            if @voting.save
+              flash[:notice] = I18n.t("votings.create.success", scope: "decidim.explicit_voting.admin")
+              redirect_to votings_path
+            else
+              flash.now[:alert] = I18n.t("votings.create.error", scope: "decidim.explicit_voting.admin")
+              render :new
+            end
           else
             flash.now[:alert] = I18n.t("votings.create.error", scope: "decidim.explicit_voting.admin")
             render :new
@@ -85,10 +97,6 @@ module Decidim
 
         def resource
           @resource ||= collection.find(params[:id])
-        end
-
-        def voting_params
-          params.require(:voting).permit(:title, :description, :start_date, :end_date, :secret)
         end
       end
     end
