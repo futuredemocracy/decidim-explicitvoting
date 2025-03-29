@@ -1,15 +1,38 @@
-# Decidim::ExplicitVoting
+# Decidim Explicit Voting
 
-Moduł głosowania jawnego dla platformy Decidim.
+Moduł do przeprowadzania głosowań w systemie Decidim.
 
 ## Funkcjonalności
 
-- Możliwość ustawienia pytania oraz materiału informacyjnego przed głosowaniem
-- Trzy domyślne opcje głosowania: ZA, PRZECIW, WSTRZYMUJĘ SIĘ (z możliwością zmiany nazw)
-- Głosujący po oddaniu głosu nie widzi natychmiastowego wyniku
-- Po zakończeniu głosowania wyświetlane są wyniki (liczba głosów dla każdej opcji)
-- Możliwość wygenerowania protokołu głosowania (lista głosujących i ich wyborów)
-- Opcja tajnego głosowania (wyniki ogólne widoczne dla wszystkich, lista głosujących tylko dla administratora)
+1. Możliwość ustawienia pytania oraz materiału informacyjnego przed głosowaniem (pole tekstowe dla administratora).
+2. Trzy domyślne opcje głosowania: ZA, PRZECIW, WSTRZYMUJĘ SIĘ (z możliwością zmiany nazw przez administratora).
+3. Głosujący po oddaniu głosu nie widzi natychmiastowego wyniku.
+4. Po zakończeniu głosowania (określonym przez administratora czasie) wyświetlane są wyniki (liczba głosów dla każdej opcji).
+5. Możliwość wygenerowania "protokołu głosowania" – lista głosujących i ich wyborów (jeśli nie jest to głosowanie tajne).
+6. Opcja tajnego głosowania – wyniki ogólne widoczne dla wszystkich, ale lista głosujących dostępna tylko dla administratora.
+
+## Opis procesu głosowania
+
+### Widok użytkownika
+
+1. Użytkownik przechodzi do sekcji głosowania w ramach konkretnego procesu.
+2. Czyta opis głosowania [pole tekstowe].
+3. Wybiera jedną z dostępnych opcji ("ZA", "PRZECIW", "WSTRZYMUJĘ SIĘ" lub ich zmodyfikowane nazwy).
+4. Klikając "Oddaj głos", kończy swój udział w głosowaniu, ew. klika na przycisk ZA, PRZECIW itd
+5. Otrzymuje komunikat potwierdzający oddanie głosu bez możliwości zmiany decyzji.
+6. Po zakończeniu głosowania pojawia się widok lub możliwość pobrania protokołu (lista głosów i wyborów, jeśli nie jest tajne).
+
+### Widok administratora
+
+1. Tworzenie nowego głosowania:
+   a) Ustawienie pytania i opisu.
+   b) Ustalenie czasu trwania głosowania.
+   c) Wybór trybu głosowania (jawne/tajne = brak wyświetlenia pkt 6 uzytkownikom).
+2. Podgląd trwających głosowań.
+3. Po zakończeniu głosowania:
+   a) Wyświetlenie wyników.
+   b) Pobranie protokołu (lista głosów i wyborów).
+   c) Możliwość eksportu danych do pliku CSV/PDF.
 
 ## Instalacja
 

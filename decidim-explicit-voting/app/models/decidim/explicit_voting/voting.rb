@@ -29,7 +29,8 @@ module Decidim
                foreign_key: "voting_id",
                dependent: :destroy
 
-      validates :title, presence: true
+      validates :title, translatable_presence: true
+      validates :description, translatable_presence: true
       validates :end_date, presence: true
 
       def active?

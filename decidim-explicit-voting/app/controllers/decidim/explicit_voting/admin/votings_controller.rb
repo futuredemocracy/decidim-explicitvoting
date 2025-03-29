@@ -28,13 +28,14 @@ module Decidim
           if @form.valid?
             @voting = Decidim::ExplicitVoting::Voting.new
             @voting.component = current_component
-            @voting.title = @form.title
-            @voting.description = @form.description
-            @voting.start_date = @form.start_date
-            @voting.end_date = @form.end_date
-            @voting.secret = @form.secret
 
-            if @voting.save
+            if @voting.update!(
+              title: @form.title,
+              description: @form.description,
+              start_date: @form.start_date,
+              end_date: @form.end_date,
+              secret: @form.secret
+            )
               flash[:notice] = I18n.t("votings.create.success", scope: "decidim.explicit_voting.admin")
               redirect_to votings_path
             else

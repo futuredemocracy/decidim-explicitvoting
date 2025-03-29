@@ -5,8 +5,8 @@ class CreateDecidimExplicitVotingTables < ActiveRecord::Migration[6.1]
   def change
     # === POPRAWKA 1: Zmiana nazwy tabeli na liczbę mnogą ===
     create_table :decidim_explicit_voting_votings do |t| # <--- Zmieniono na liczbę mnogą
-      t.string :title, null: false
-      t.text :description
+      t.jsonb :title
+      t.jsonb :description
       t.datetime :start_date
       t.datetime :end_date, null: false
       t.boolean :secret, default: false

@@ -51,3 +51,6 @@ development_app.log
 
 # Ignore database configuration
 config/database.yml
+
+# Custom files
+*.dump
