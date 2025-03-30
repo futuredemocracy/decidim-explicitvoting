@@ -7,6 +7,7 @@ module Decidim
 
       attribute :voting_option_id, Integer
       attribute :voting_id, Integer
+      attribute :user, Object
 
       validates :voting_option_id, presence: true
       validates :voting, presence: true
