@@ -4,6 +4,7 @@ module Decidim
   module ExplicitVoting
     class VotingsController < Decidim::ExplicitVoting::ApplicationController
       include Decidim::ComponentPathHelper
+      include Decidim::FormFactory
       helper_method :votings, :voting, :user_vote
 
       def index
@@ -13,7 +14,7 @@ module Decidim
       def show
         enforce_permission_to :read, :voting, voting: voting
         @voting_options = voting.options.includes(:votes)
-        @form = form(VoteForm).instance
+        @form = form(Decidim::ExplicitVoting::VoteForm).instance
       end
 
       private
