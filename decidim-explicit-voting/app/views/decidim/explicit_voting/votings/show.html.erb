@@ -1,7 +1,7 @@
 <div class="row column">
   <div class="title-action">
     <h2 class="title-action__title section-heading">
-      <%= translated_attribute(voting.title) %>
+      <%= voting.title["pl"] %>
     </h2>
   </div>
 </div>
@@ -12,11 +12,11 @@
       <div class="card__content">
         <div class="card__header">
           <h5 class="card__title">
-            <%= t(".description") %>
+            Opis
           </h5>
         </div>
         <div class="card__text">
-          <%= decidim_sanitize_editor_admin translated_attribute(voting.description) %>
+          <%= decidim_sanitize_editor_admin(voting.description["pl"]) %>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="card__content">
           <div class="card__header">
             <h5 class="card__title">
-              <%= t(".results") %>
+              Wyniki
             </h5>
           </div>
           <div class="card__text">
@@ -34,8 +34,8 @@
               <table class="table-list">
                 <thead>
                   <tr>
-                    <th><%= t(".option") %></th>
-                    <th><%= t(".votes") %></th>
+                    <th>Opcja</th>
+                    <th>Głosy</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -59,34 +59,34 @@
       <div class="card__content">
         <div class="card__header">
           <h5 class="card__title">
-            <%= t(".information") %>
+            Informacje
           </h5>
         </div>
         <div class="card__text">
           <div class="extra__date">
-            <strong><%= t(".start_date") %>:</strong>
+            <strong>Data rozpoczęcia:</strong>
             <% if voting.start_date %>
               <%= l voting.start_date, format: :long %>
             <% else %>
-              <%= t(".not_set") %>
+              Nie ustawiono
             <% end %>
           </div>
           <div class="extra__date">
-            <strong><%= t(".end_date") %>:</strong>
+            <strong>Data zakończenia:</strong>
             <%= l voting.end_date, format: :long %>
           </div>
           <div class="extra">
-            <strong><%= t(".secret") %>:</strong>
-            <%= voting.secret? ? t(".secret_yes") : t(".secret_no") %>
+            <strong>Głosowanie tajne:</strong>
+            <%= voting.secret? ? "Tak" : "Nie" %>
           </div>
           <div class="extra">
-            <strong><%= t(".status") %>:</strong>
+            <strong>Status:</strong>
             <% if voting.active? %>
-              <span class="success label"><%= t(".active") %></span>
+              <span class="success label">Aktywne</span>
             <% elsif voting.upcoming? %>
-              <span class="warning label"><%= t(".upcoming") %></span>
+              <span class="warning label">Nadchodzące</span>
             <% else %>
-              <span class="alert label"><%= t(".finished") %></span>
+              <span class="alert label">Zakończone</span>
             <% end %>
           </div>
         </div>
@@ -98,7 +98,7 @@
         <div class="card__content">
           <div class="card__header">
             <h5 class="card__title">
-              <%= t(".vote") %>
+              Oddaj głos
             </h5>
           </div>
           <div class="card__text">
@@ -115,7 +115,7 @@
               </div>
 
               <div class="actions">
-                <%= f.submit t(".submit"), class: "button expanded", data: { disable: true } %>
+                <%= f.submit "Głosuj", class: "button expanded", data: { disable: true } %>
               </div>
             <% end %>
           </div>
@@ -125,9 +125,9 @@
       <div class="card">
         <div class="card__content">
           <div class="callout success">
-            <%= t(".already_voted") %>
+            Już oddałeś głos w tym głosowaniu
             <div class="actions">
-              <%= link_to t(".cancel_vote"), voting_vote_path(voting, user_vote), method: :delete, class: "button expanded hollow alert", data: { confirm: t(".confirm_cancel_vote") } %>
+              <%= link_to "Anuluj głos", voting_vote_path(voting, user_vote), method: :delete, class: "button expanded hollow alert", data: { confirm: "Czy na pewno chcesz anulować swój głos?" } %>
             </div>
           </div>
         </div>

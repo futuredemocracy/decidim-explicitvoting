@@ -1,7 +1,7 @@
 <div class="row columns">
   <div class="title-action">
     <h2 class="title-action__title section-heading">
-      <%= t(".title") %>
+      Głosowania Jawne
     </h2>
   </div>
 </div>
@@ -15,47 +15,54 @@
             <div class="card__header">
               <%= link_to voting_path(voting), class: "card__link" do %>
                 <h5 class="card__title">
-                  <%= translated_attribute(voting.title) %>
+                  <%= voting.title["pl"] %>
                 </h5>
               <% end %>
             </div>
             <div class="card__text">
               <div class="card__text--paragraph">
-                <%= decidim_sanitize_editor_admin translated_attribute(voting.description) %>
+                <%= decidim_sanitize_editor_admin(voting.description["pl"]) %>
               </div>
             </div>
             <div class="card__status">
               <% if voting.active? %>
                 <span class="card__status-label success">
-                  <%= t(".active") %>
+                  Aktywne
                 </span>
               <% elsif voting.upcoming? %>
                 <span class="card__status-label warning">
-                  <%= t(".upcoming") %>
+                  Nadchodzące
                 </span>
               <% else %>
                 <span class="card__status-label alert">
-                  <%= t(".finished") %>
+                  Zakończone
                 </span>
               <% end %>
             </div>
             <div class="card__footer">
               <div class="card__footer-status">
                 <div class="card__footer--data">
-                  <span class="card__footer--label"><%= t(".end_date") %>:</span>
+                  <span class="card__footer--label">Data zakończenia:</span>
                   <span class="card__footer--text"><%= l voting.end_date, format: :long %></span>
                 </div>
                 <div class="card__footer--data">
-                  <span class="card__footer--label"><%= t(".votes") %>:</span>
+                  <span class="card__footer--label">Głosy:</span>
                   <span class="card__footer--text">
                     <% if voting.finished? || !voting.secret? %>
                       <%= voting.votes.count %>
                     <% else %>
-                      <%= t(".hidden") %>
+                      Ukryte
                     <% end %>
                   </span>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="card__footer">
+            <div class="card__buttons">
+              <%= link_to voting_path(voting), class: "card__button button button--sc small" do %>
+                Zobacz szczegóły
+              <% end %>
             </div>
           </div>
         </div>
