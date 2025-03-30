@@ -7,6 +7,8 @@ module Decidim
       helper Decidim::ApplicationHelper
       helper Decidim::TranslationsHelper
       helper Decidim::MetaTagsHelper
+      
+      helper_method :current_organization
     end
   end
 end 

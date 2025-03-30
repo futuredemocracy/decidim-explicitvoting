@@ -1,52 +1,56 @@
-<div class="row column">
+<div class="row columns">
   <div class="title-action">
     <h2 class="title-action__title section-heading">
-      <%= voting.title["pl"] %>
+      <%= voting.title.is_a?(Hash) && voting.title["pl"] ? voting.title["pl"] : "Nowe głosowanie" %>
     </h2>
   </div>
 </div>
 
 <div class="row">
   <div class="columns mediumlarge-8">
-    <div class="card">
-      <div class="card__content">
-        <div class="card__header">
-          <h5 class="card__title">
-            Opis
-          </h5>
-        </div>
-        <div class="card__text">
-          <%= decidim_sanitize_editor_admin(voting.description["pl"]) %>
+    <div class="section">
+      <div class="card">
+        <div class="card__content">
+          <div class="card__header">
+            <h5 class="card__title">
+              Opis
+            </h5>
+          </div>
+          <div class="card__text">
+            <%= voting.description.is_a?(Hash) && voting.description["pl"] ? voting.description["pl"] : "Brak opisu" %>
+          </div>
         </div>
       </div>
     </div>
 
     <% if voting.finished? || (!voting.secret? && allowed_to?(:read, :voting, voting: voting)) %>
-      <div class="card">
-        <div class="card__content">
-          <div class="card__header">
-            <h5 class="card__title">
-              Wyniki
-            </h5>
-          </div>
-          <div class="card__text">
-            <div class="table-scroll">
-              <table class="table-list">
-                <thead>
-                  <tr>
-                    <th>Opcja</th>
-                    <th>Głosy</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% @voting_options.each do |option| %>
+      <div class="section">
+        <div class="card">
+          <div class="card__content">
+            <div class="card__header">
+              <h5 class="card__title">
+                Wyniki
+              </h5>
+            </div>
+            <div class="card__text">
+              <div class="table-scroll">
+                <table class="table-list">
+                  <thead>
                     <tr>
-                      <td><%= option.name %></td>
-                      <td><%= option.votes_count %></td>
+                      <th>Opcja</th>
+                      <th>Głosy</th>
                     </tr>
-                  <% end %>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <% @voting_options.each do |option| %>
+                      <tr>
+                        <td><%= option.name %></td>
+                        <td><%= option.votes_count %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -55,79 +59,97 @@
   </div>
 
   <div class="columns mediumlarge-4">
-    <div class="card">
-      <div class="card__content">
-        <div class="card__header">
-          <h5 class="card__title">
-            Informacje
-          </h5>
-        </div>
-        <div class="card__text">
-          <div class="extra__date">
-            <strong>Data rozpoczęcia:</strong>
-            <% if voting.start_date %>
-              <%= l voting.start_date, format: :long %>
-            <% else %>
-              Nie ustawiono
-            <% end %>
+    <div class="section">
+      <div class="card">
+        <div class="card__content">
+          <div class="card__header">
+            <h5 class="card__title">
+              Informacje
+            </h5>
           </div>
-          <div class="extra__date">
-            <strong>Data zakończenia:</strong>
-            <%= l voting.end_date, format: :long %>
-          </div>
-          <div class="extra">
-            <strong>Głosowanie tajne:</strong>
-            <%= voting.secret? ? "Tak" : "Nie" %>
-          </div>
-          <div class="extra">
-            <strong>Status:</strong>
-            <% if voting.active? %>
-              <span class="success label">Aktywne</span>
-            <% elsif voting.upcoming? %>
-              <span class="warning label">Nadchodzące</span>
-            <% else %>
-              <span class="alert label">Zakończone</span>
-            <% end %>
+          <div class="card__text">
+            <div class="extra">
+              <div class="extra__subnav">
+                <ul>
+                  <li>
+                    <span class="extra__subnav-title">Data rozpoczęcia</span>
+                    <span class="extra__subnav-text">
+                      <% if voting.start_date %>
+                        <%= l voting.start_date, format: :long %>
+                      <% else %>
+                        Nie ustawiono
+                      <% end %>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="extra__subnav-title">Data zakończenia</span>
+                    <span class="extra__subnav-text"><%= l voting.end_date, format: :long %></span>
+                  </li>
+                  <li>
+                    <span class="extra__subnav-title">Głosowanie tajne</span>
+                    <span class="extra__subnav-text"><%= voting.secret? ? "Tak" : "Nie" %></span>
+                  </li>
+                  <li>
+                    <span class="extra__subnav-title">Status</span>
+                    <span class="extra__subnav-text">
+                      <% if voting.active? %>
+                        <span class="label success">Aktywne</span>
+                      <% elsif voting.upcoming? %>
+                        <span class="label warning">Nadchodzące</span>
+                      <% else %>
+                        <span class="label alert">Zakończone</span>
+                      <% end %>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <% if voting.active? && allowed_to?(:vote, :voting, voting: voting) && !user_vote %>
-      <div class="card">
-        <div class="card__content">
-          <div class="card__header">
-            <h5 class="card__title">
-              Oddaj głos
-            </h5>
-          </div>
-          <div class="card__text">
-            <%= decidim_form_for(@form, url: voting_votes_path(voting), html: { class: "form vote_form" }) do |f| %>
-              <%= f.hidden_field :voting_id, value: voting.id %>
-              
-              <div class="field">
-                <% @voting_options.each do |option| %>
-                  <div class="radio-button-group">
-                    <%= f.radio_button :voting_option_id, option.id %>
-                    <%= f.label "voting_option_id_#{option.id}", option.name %>
-                  </div>
-                <% end %>
-              </div>
+      <div class="section">
+        <div class="card">
+          <div class="card__content">
+            <div class="card__header">
+              <h5 class="card__title">
+                Oddaj głos
+              </h5>
+            </div>
+            <div class="card__text">
+              <%= decidim_form_for(@form, url: voting_votes_path(voting), html: { class: "form" }) do |f| %>
+                <%= f.hidden_field :voting_id, value: voting.id %>
+                
+                <div class="field">
+                  <% @voting_options.each do |option| %>
+                    <div class="radio-button-group mb-2">
+                      <div class="field">
+                        <%= f.radio_button :voting_option_id, option.id, label: false %>
+                        <%= f.label "voting_option_id_#{option.id}", option.name, class: "radio-button-option" %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
 
-              <div class="actions">
-                <%= f.submit "Głosuj", class: "button expanded", data: { disable: true } %>
-              </div>
-            <% end %>
+                <div class="actions">
+                  <%= f.submit "Głosuj", class: "button expanded", data: { disable: true } %>
+                </div>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
     <% elsif user_vote %>
-      <div class="card">
-        <div class="card__content">
-          <div class="callout success">
-            Już oddałeś głos w tym głosowaniu
-            <div class="actions">
-              <%= link_to "Anuluj głos", voting_vote_path(voting, user_vote), method: :delete, class: "button expanded hollow alert", data: { confirm: "Czy na pewno chcesz anulować swój głos?" } %>
+      <div class="section">
+        <div class="card">
+          <div class="card__content">
+            <div class="callout success">
+              <p>Już oddałeś głos w tym głosowaniu</p>
+              <div class="callout__actions">
+                <%= link_to "Anuluj głos", voting_vote_path(voting, user_vote), method: :delete, class: "button hollow alert expanded", data: { confirm: "Czy na pewno chcesz anulować swój głos?" } %>
+              </div>
             </div>
           </div>
         </div>
