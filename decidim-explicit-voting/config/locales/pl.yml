@@ -40,6 +40,8 @@ pl:
             secret: Tajne
             votes: Głosy
             status: Status
+            no_html_format: "Protokół dostępny jest tylko w formacie PDF."
+            export_pdf: Eksportuj głosowania do PDF
           new:
             title: Nowe głosowanie
             create: Utwórz głosowanie

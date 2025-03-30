@@ -52,10 +52,8 @@
                   <%= icon_link_to "pencil", edit_voting_path(voting), t(".edit"), class: "action-icon--edit" %>
                 <% end %>
 
-                <% if voting.finished? %>
-                  <%= icon_link_to "chart-bar", results_voting_path(voting), t(".results"), class: "action-icon--results" %>
-                  <%= icon_link_to "download", protocol_voting_path(voting), t(".protocol"), class: "action-icon--protocol" %>
-                <% end %>
+                <%= icon_link_to "chart-bar", results_voting_path(voting), t(".results"), class: "action-icon--results" %>
+                <%= icon_link_to "download", protocol_voting_path(voting), t(".protocol"), class: "action-icon--protocol" %>
 
                 <% if allowed_to? :destroy, :voting, voting: voting %>
                   <%= icon_link_to "trash", voting_path(voting), t(".destroy"), class: "action-icon--remove", method: :delete, data: { confirm: t(".confirm_destroy") } %>

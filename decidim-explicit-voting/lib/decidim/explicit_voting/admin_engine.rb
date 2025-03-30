@@ -17,7 +17,7 @@ module Decidim
           end
           member do
             get :results
-            get :protocol
+            get :protocol, defaults: { format: :pdf }
           end
         end
 
