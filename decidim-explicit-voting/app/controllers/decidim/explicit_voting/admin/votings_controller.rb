@@ -231,8 +231,8 @@ module Decidim
             votes_data = []
             votes_data << ["Użytkownik", "Wybrana opcja", "Data oddania głosu"]
             
-            voting.votes.includes(:decidim_user, :voting_option).each do |vote|
-              user_name = vote.decidim_user&.name || "Nieznany użytkownik"
+            voting.votes.includes(:user, :voting_option).each do |vote|
+              user_name = vote.user&.name || "Nieznany użytkownik"
               option_name = translated_attribute(vote.voting_option&.name) || "Nieznana opcja"
               votes_data << [user_name, option_name, I18n.l(vote.created_at, format: :long)]
             end
