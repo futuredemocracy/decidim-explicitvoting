@@ -49,14 +49,14 @@
               </td>
               <td class="table-list__actions">
                 <% if allowed_to? :update, :voting, voting: voting %>
-                  <%= icon_link_to "pencil", edit_voting_path(voting), t(".edit"), class: "action-icon--edit" %>
+                  <%= link_to t(".edit"), edit_voting_path(voting), class: "action-icon" %>
                 <% end %>
 
-                <%= icon_link_to "chart-bar", results_voting_path(voting), t(".results"), class: "action-icon--results" %>
-                <%= icon_link_to "download", protocol_voting_path(voting), t(".protocol"), class: "action-icon--protocol" %>
+                <%= link_to t(".results"), results_voting_path(voting), class: "action-icon" %>
+                <%= link_to t(".protocol"), protocol_voting_path(voting), class: "action-icon" %>
 
                 <% if allowed_to? :destroy, :voting, voting: voting %>
-                  <%= icon_link_to "trash", voting_path(voting), t(".destroy"), class: "action-icon--remove", method: :delete, data: { confirm: t(".confirm_destroy") } %>
+                  <%= link_to t(".destroy"), voting_path(voting), class: "action-icon", method: :delete, data: { confirm: t(".confirm_destroy") } %>
                 <% end %>
               </td>
             </tr>

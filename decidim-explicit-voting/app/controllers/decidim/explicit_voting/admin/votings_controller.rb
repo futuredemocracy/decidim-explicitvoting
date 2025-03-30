@@ -199,6 +199,13 @@ module Decidim
           pdf.text "Data rozpoczęcia: #{I18n.l(voting.start_date, format: :long) if voting.start_date}"
           pdf.text "Data zakończenia: #{I18n.l(voting.end_date, format: :long)}"
           pdf.text "Głosowanie #{voting.secret? ? 'tajne' : 'jawne'}"
+          
+          # Dodajemy informację o statusie głosowania
+          if voting.active?
+            pdf.move_down 10
+            pdf.text "Głosowanie jest w trakcie w momencie wykonywania eksportu do sprawozdania", style: :italic
+          end
+          
           pdf.move_down 20
           
           # Wyniki głosowania

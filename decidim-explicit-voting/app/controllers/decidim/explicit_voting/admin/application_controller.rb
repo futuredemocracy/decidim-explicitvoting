@@ -5,6 +5,9 @@ module Decidim
     module Admin
       class ApplicationController < Decidim::Admin::Components::BaseController
         layout "decidim/admin/application"
+        helper Decidim::ApplicationHelper
+        helper Decidim::Admin::IconLinkHelper
+        helper Decidim::Admin::IconWithTooltipHelper
 
         def permission_class_chain
           [
