@@ -54,6 +54,31 @@ en:
             title: Votings
             upcoming: Upcoming
             votes: Votes
+            no_html_format: "Protocol is only available in PDF format."
+            export_pdf: Export votings to PDF
+          results:
+            title: Voting Results
+            back: Back
+            question: Question
+            description: Description
+            dates: Dates
+            total_votes: Total votes
+            type: Voting type
+            secret_yes: "Secret"
+            secret_no: "Open"
+            still_active: "The voting is still active. Results may change."
+            results_heading: "Voting Results"
+            option: "Option"
+            votes_count: "Number of votes"
+            percentage: "Percentage"
+            votes_list: "List of votes"
+            user: "User"
+            selected_option: "Selected option"
+            vote_date: "Vote date"
+            unknown_user: "Unknown user"
+            unknown_option: "Unknown option"
+            export_protocol: "Download PDF protocol"
+            back_to_list: "Back to voting list"
           new:
             create: Create voting
             title: New voting

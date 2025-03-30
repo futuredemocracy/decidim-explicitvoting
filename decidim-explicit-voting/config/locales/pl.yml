@@ -42,6 +42,29 @@ pl:
             status: Status
             no_html_format: "Protokół dostępny jest tylko w formacie PDF."
             export_pdf: Eksportuj głosowania do PDF
+          results:
+            title: Wyniki głosowania
+            back: Powrót
+            question: Pytanie
+            description: Opis
+            dates: Daty
+            total_votes: Łączna liczba głosów
+            type: Typ głosowania
+            secret_yes: "Tajne"
+            secret_no: "Jawne"
+            still_active: "Głosowanie jest nadal aktywne. Wyniki mogą ulec zmianie."
+            results_heading: "Wyniki głosowania"
+            option: "Opcja"
+            votes_count: "Liczba głosów"
+            percentage: "Procent"
+            votes_list: "Lista głosów"
+            user: "Użytkownik"
+            selected_option: "Wybrana opcja"
+            vote_date: "Data głosowania"
+            unknown_user: "Nieznany użytkownik"
+            unknown_option: "Nieznana opcja"
+            export_protocol: "Pobierz protokół PDF"
+            back_to_list: "Powrót do listy głosowań"
           new:
             title: Nowe głosowanie
             create: Utwórz głosowanie
