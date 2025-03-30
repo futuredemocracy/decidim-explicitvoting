@@ -36,7 +36,43 @@ module Decidim
       validate :validate_description_presence
       
       def to_s
-        Decidim::TranslatableAttributes.translated_attribute(title)
+        # Próbujemy obsłużyć zarówno przypadek gdy title jest hashem,
+        # jak i gdy jest stringiem reprezentującym hash
+        if title.is_a?(Hash)
+          hash = title
+        elsif title.is_a?(String) && title.include?("=>")
+          # Spróbuj zparsować string jako hash Rubiego
+          begin
+            hash = eval(title)
+          rescue
+            return title
+          end
+        else
+          return title.to_s
+        end
+        
+        locale = I18n.locale.to_s
+        hash[locale] || hash["pl"] || hash["en"] || hash.values.first || ""
+      end
+      
+      def get_translated_field(field_name)
+        field = self.send(field_name.to_sym)
+        
+        if field.is_a?(Hash)
+          hash = field
+        elsif field.is_a?(String) && field.include?("=>")
+          # Spróbuj zparsować string jako hash Rubiego
+          begin
+            hash = eval(field)
+          rescue
+            return field
+          end
+        else
+          return field.to_s
+        end
+        
+        locale = I18n.locale.to_s
+        hash[locale] || hash["pl"] || hash["en"] || hash.values.first || ""
       end
       
       def method_missing(method, *args, &block)
@@ -44,8 +80,18 @@ module Decidim
           field_name = $1
           locale = $2
           
-          translations = self.send(field_name.to_sym)
-          return Decidim::TranslatableAttributes.translated_attribute(translations, nil, locale) if translations
+          field = self.send(field_name.to_sym)
+          
+          if field.is_a?(Hash)
+            return field[locale] || ""
+          elsif field.is_a?(String) && field.include?("=>")
+            begin
+              hash = eval(field)
+              return hash[locale] || ""
+            rescue
+              return ""
+            end
+          end
           
           return ""
         end
@@ -84,13 +130,13 @@ module Decidim
       private
       
       def validate_title_presence
-        if title.blank? || title[default_locale].blank?
+        if title.blank? || (title.is_a?(Hash) && title[default_locale].blank?)
           errors.add(:title, :invalid)
         end
       end
       
       def validate_description_presence
-        if description.blank? || description[default_locale].blank?
+        if description.blank? || (description.is_a?(Hash) && description[default_locale].blank?)
           errors.add(:description, :invalid)
         end
       end

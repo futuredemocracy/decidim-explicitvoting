@@ -1,10 +1,67 @@
 <div class="row columns">
   <div class="title-action">
     <h2 class="title-action__title section-heading">
-      <%= voting.title.is_a?(Hash) && voting.title["pl"] ? voting.title["pl"] : "Nowe głosowanie" %>
+      <%= voting.get_translated_field("title").html_safe %>
     </h2>
   </div>
 </div>
+
+<%
+# Zmienne debugowe dla bieżącego głosowania
+title_debug = voting.title
+description_debug = voting.description
+title_class = title_debug.class.name
+description_class = description_debug.class.name
+%>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('======= DIAGNOSTYKA TŁUMACZEŃ WIDOK SZCZEGÓŁOWY =======');
+    console.log('Tytuł - klasa: <%= title_class %>');
+    console.log('Tytuł - wartość:', <%= raw(title_debug.to_json) %>);
+    console.log('Język bieżący: <%= I18n.locale %>');
+    console.log('Język domyślny: <%= I18n.default_locale %>');
+    console.log('Opis - klasa: <%= description_class %>');
+    console.log('Opis - wartość:', <%= raw(description_debug.to_json) %>);
+    <% if title_debug.is_a?(Hash) %>
+    console.log('Tytuł PL:', <%= raw(title_debug["pl"].to_json) %>);
+    console.log('Tytuł EN:', <%= raw(title_debug["en"].to_json) %>);
+    <% end %>
+    
+    // Sprawdźmy co zwraca metoda to_s
+    console.log('voting.to_s():', <%= raw(voting.to_s.to_json) %>);
+
+    // Sprawdźmy, co zwraca Decidim::TranslatableAttributes.translated_attribute
+    <% begin %>
+    <% translated_title = Decidim::TranslatableAttributes.translated_attribute(voting.title) %>
+    console.log('Decidim::TranslatableAttributes.translated_attribute(title):', <%= raw(translated_title.to_json) %>);
+    <% rescue => e %>
+    console.log('Błąd przy wywołaniu translated_attribute:', <%= raw(e.message.to_json) %>);
+    <% end %>
+    
+    console.log('======= MODEL VOTING =======');
+    <% instance_vars = voting.instance_variables.map { |v| [v.to_s, voting.instance_variable_get(v).class.name] }.to_h %>
+    console.log('Zmienne instancji:', <%= raw(instance_vars.to_json) %>);
+    
+    <% if defined?(Decidim::TranslatableAttributes) %>
+    console.log('Decidim::TranslatableAttributes jest zdefiniowany');
+    <% else %>
+    console.log('Decidim::TranslatableAttributes NIE jest zdefiniowany');
+    <% end %>
+    
+    // Testujemy bezpośrednie wywołania metod
+    <% if voting.respond_to?(:translated_title) %>
+    console.log('voting.translated_title():', <%= raw(voting.translated_title.to_json) %>);
+    <% end %>
+    
+    <% if voting.respond_to?(:title_pl) %>
+    console.log('voting.title_pl():', <%= raw(voting.title_pl.to_json) %>);
+    <% end %>
+    
+    // Testujemy metodę get_translated_field
+    console.log('voting.get_translated_field("title"):', <%= raw(voting.get_translated_field("title").to_json) %>);
+    console.log('voting.get_translated_field("description"):', <%= raw(voting.get_translated_field("description").to_json) %>);
+  });
+</script>
 
 <div class="row">
   <div class="columns mediumlarge-8">
@@ -17,7 +74,7 @@
             </h5>
           </div>
           <div class="card__text">
-            <%= voting.description.is_a?(Hash) && voting.description["pl"] ? voting.description["pl"] : "Brak opisu" %>
+            <%= sanitize(voting.get_translated_field("description")) %>
           </div>
         </div>
       </div>

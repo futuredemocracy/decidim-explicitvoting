@@ -6,6 +6,54 @@
   </div>
 </div>
 
+<%
+# Dodajmy zmienne debugowe dla pierwszego głosowania, jeśli istnieje
+if votings.any?
+  first_voting = votings.first
+  title_debug = first_voting.title
+  description_debug = first_voting.description
+  title_class = title_debug.class.name
+  description_class = description_debug.class.name
+%>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('======= DIAGNOSTYKA TŁUMACZEŃ =======');
+    console.log('Tytuł - klasa: <%= title_class %>');
+    console.log('Tytuł - wartość:', <%= raw(title_debug.to_json) %>);
+    console.log('Język bieżący: <%= I18n.locale %>');
+    console.log('Język domyślny: <%= I18n.default_locale %>');
+    console.log('Opis - klasa: <%= description_class %>');
+    console.log('Opis - wartość:', <%= raw(description_debug.to_json) %>);
+    <% if title_debug.is_a?(Hash) %>
+    console.log('Tytuł PL:', <%= raw(title_debug["pl"].to_json) %>);
+    console.log('Tytuł EN:', <%= raw(title_debug["en"].to_json) %>);
+    <% end %>
+    
+    // Testujemy różne sposoby wyświetlania
+    <% if title_debug.is_a?(Hash) %>
+    console.log('Test 1 - title_debug["pl"]:', <%= raw(title_debug["pl"].to_json) %>);
+    console.log('Test 2 - title_debug[I18n.locale.to_s]:', <%= raw(title_debug[I18n.locale.to_s].to_json) %>);
+    <% if title_debug.respond_to?(:fetch) %>
+    console.log('Test 3 - title_debug.fetch(I18n.locale.to_s, nil):', <%= raw(title_debug.fetch(I18n.locale.to_s, nil).to_json) %>);
+    <% end %>
+    <% end %>
+
+    console.log('======= MODEL VOTING =======');
+    console.log('Metody dostępne w modelu Voting:');
+    <% methods = first_voting.methods - Object.methods %>
+    <% translation_methods = methods.select { |m| m.to_s.include?('translat') } %>
+    console.log('Translation methods:', <%= raw(translation_methods.to_json) %>);
+    
+    // Testujemy metodę to_s
+    console.log('first_voting.to_s():', <%= raw(first_voting.to_s.to_json) %>);
+    
+    // Testujemy metodę get_translated_field
+    console.log('first_voting.get_translated_field("title"):', <%= raw(first_voting.get_translated_field("title").to_json) %>);
+    console.log('first_voting.get_translated_field("description"):', <%= raw(first_voting.get_translated_field("description").to_json) %>);
+  });
+</script>
+<% end %>
+
 <div class="row">
   <div class="columns">
     <div class="card-grid">
@@ -15,13 +63,13 @@
             <div class="card__header">
               <%= link_to voting_path(voting), class: "card__link" do %>
                 <h5 class="card__title">
-                  <%= voting.title.is_a?(Hash) && voting.title["pl"] ? voting.title["pl"] : "Nowe głosowanie" %>
+                  <%= voting.get_translated_field("title").html_safe %>
                 </h5>
               <% end %>
             </div>
             <div class="card__text">
               <div class="card__text--paragraph">
-                <%= voting.description.is_a?(Hash) && voting.description["pl"] ? voting.description["pl"] : "Brak opisu" %>
+                <%= sanitize(voting.get_translated_field("description")) %>
               </div>
             </div>
             
