@@ -126,6 +126,9 @@
         <div class="card__content">
           <div class="callout success">
             <%= t(".already_voted") %>
+            <div class="actions">
+              <%= link_to t(".cancel_vote"), voting_vote_path(voting, user_vote), method: :delete, class: "button expanded hollow alert", data: { confirm: t(".confirm_cancel_vote") } %>
+            </div>
           </div>
         </div>
       </div>

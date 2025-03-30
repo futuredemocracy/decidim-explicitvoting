@@ -80,6 +80,8 @@ en:
         show:
           active: Active
           already_voted: You have already voted in this voting
+          cancel_vote: Cancel vote
+          confirm_cancel_vote: Are you sure you want to cancel your vote?
           description: Description
           end_date: End date
           finished: Finished

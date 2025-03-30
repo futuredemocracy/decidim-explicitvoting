@@ -29,7 +29,7 @@ module Decidim
       end
 
       def destroy
-        @vote = Vote.find_by(votable: @votable, author: current_user)
+        @vote = Vote.find_by(voting: voting, user: current_user)
         
         if @vote&.destroy
           flash[:notice] = t(".success")
@@ -44,10 +44,6 @@ module Decidim
 
       def voting
         @voting ||= Voting.find(params[:voting_id])
-      end
-
-      def set_votable
-        @votable = GlobalID::Locator.locate(params[:votable_gid])
       end
 
       def vote_params

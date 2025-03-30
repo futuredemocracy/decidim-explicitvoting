@@ -8,7 +8,7 @@ module Decidim
 
       routes do
         resources :votings, only: [:index, :show] do
-          resources :votes, only: [:create]
+          resources :votes, only: [:create, :destroy]
           resource :protocol, only: [:show]
         end
         root to: "votings#index"

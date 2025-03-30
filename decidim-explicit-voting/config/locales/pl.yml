@@ -88,6 +88,8 @@ pl:
           vote: Oddaj głos
           submit: Głosuj
           already_voted: Już oddałeś głos w tym głosowaniu
+          cancel_vote: Anuluj głos
+          confirm_cancel_vote: Czy na pewno chcesz anulować swój głos?
       votes:
         create:
           error: Wystąpił problem podczas oddawania głosu
