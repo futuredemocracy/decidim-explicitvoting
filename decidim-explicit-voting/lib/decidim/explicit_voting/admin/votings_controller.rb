@@ -53,12 +53,19 @@ module Decidim
         def destroy
           enforce_permission_to :destroy, :voting, voting: resource
           @voting = resource
+
+          if @voting.finished?
+            flash[:alert] = I18n.t("votings.destroy.error_finished", scope: "decidim.explicit_voting.admin")
+            redirect_to votings_path, status: :see_other
+            return
+          end
+
           if @voting.destroy
             flash[:notice] = I18n.t("votings.destroy.success", scope: "decidim.explicit_voting.admin")
           else
-            flash[:alert] = I18n.t("votings.destroy.error", scope: "decidim.explicit_voting.admin")
+            flash[:alert] = I18n.t("votings.destroy.error", scope: "decidim.explicit_voting.admin", error: @voting.errors.full_messages.join(", "))
           end
-          redirect_to votings_path
+          redirect_to votings_path, status: :see_other
         end
 
         def results

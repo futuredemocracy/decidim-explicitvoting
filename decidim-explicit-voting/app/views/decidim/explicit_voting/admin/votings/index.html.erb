@@ -55,7 +55,7 @@
                 <%= link_to t(".results"), results_voting_path(voting), class: "action-icon" %>
                 <%= link_to t(".protocol"), protocol_voting_path(voting), class: "action-icon" %>
 
-                <% if allowed_to? :destroy, :voting, voting: voting %>
+                <% if allowed_to?(:destroy, :voting, voting: voting) && !voting.finished? %>
                   <%= link_to t(".destroy"), voting_path(voting), class: "action-icon", method: :delete, data: { confirm: t(".confirm_destroy") } %>
                 <% end %>
               </td>

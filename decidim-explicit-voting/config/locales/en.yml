@@ -35,6 +35,7 @@ en:
             success: Voting created successfully
           destroy:
             error: There was a problem deleting the voting
+            error_finished: Cannot delete a finished voting
             success: Voting deleted successfully
           index:
             active: Active

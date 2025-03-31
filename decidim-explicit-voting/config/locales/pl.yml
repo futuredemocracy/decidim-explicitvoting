@@ -21,7 +21,8 @@ pl:
             success: Głosowanie zostało utworzone pomyślnie
           destroy:
             error: Wystąpił problem podczas usuwania głosowania
-            success: Głosowanie zostało usunięte pomyślnie
+            error_finished: Nie można usunąć zakończonego głosowania
+            success: Głosowanie zostało pomyślnie usunięte
           index:
             title: Głosowania
             new: Nowe głosowanie
