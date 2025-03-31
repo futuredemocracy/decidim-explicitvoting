@@ -205,7 +205,9 @@ description_class = description_debug.class.name
             <div class="callout success">
               <p>Już oddałeś głos w tym głosowaniu</p>
               <div class="callout__actions">
-                <%= link_to "Anuluj głos", voting_vote_path(voting, user_vote), method: :delete, class: "button hollow alert expanded", data: { confirm: "Czy na pewno chcesz anulować swój głos?" } %>
+                <% if voting.active? %>
+                  <%= link_to "Anuluj głos", voting_vote_path(voting, user_vote), method: :delete, class: "button hollow alert expanded", data: { confirm: "Czy na pewno chcesz anulować swój głos?" } %>
+                <% end %>
               </div>
             </div>
           </div>

@@ -31,7 +31,7 @@ module Decidim
       def destroy
         @vote = Vote.find_by(voting: voting, user: current_user)
         
-        if @vote&.destroy
+        if voting.active? && @vote&.destroy
           flash[:notice] = t(".success")
         else
           flash[:alert] = t(".error")
