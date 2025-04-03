@@ -55,12 +55,17 @@ bundle exec rails db:migrate
 This module uses DejaVu fonts for PDF generation with proper UTF-8 character support. To ensure the PDF functionality works correctly, you need to:
 
 1. Download DejaVu fonts from the official website: [DejaVu Fonts](https://dejavu-fonts.github.io/)
-2. Create a directory `app/assets/fonts` in your application if it doesn't exist
+2. Create a directory `app/assets/fonts` in your main Decidim application (not in the explicit-voting module)
 3. Place the following font files in that directory:
    - DejaVuSans.ttf
    - DejaVuSans-Bold.ttf
    - DejaVuSans-Oblique.ttf
    - DejaVuSans-BoldOblique.ttf
+4. Make sure the fonts are included in your asset pipeline by adding the following to your `config/initializers/assets.rb`:
+   ```ruby
+   Rails.application.config.assets.paths << Rails.root.join("app", "assets", "fonts")
+   ```
+5. Restart your Rails server after making these changes
 
 These fonts are required for the proper generation of voting protocols and reports with diacritical marks.
 

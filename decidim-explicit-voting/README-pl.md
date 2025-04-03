@@ -55,12 +55,17 @@ bundle exec rails db:migrate
 Ten moduł wykorzystuje czcionki DejaVu do generowania plików PDF z poprawną obsługą znaków UTF-8. Aby zapewnić prawidłowe działanie funkcji PDF, należy:
 
 1. Pobrać czcionki DejaVu z oficjalnej strony: [Czcionki DejaVu](https://dejavu-fonts.github.io/)
-2. Utworzyć katalog `app/assets/fonts` w aplikacji, jeśli nie istnieje
+2. Utworzyć katalog `app/assets/fonts` w głównej aplikacji Decidim (nie w module explicit-voting)
 3. Umieścić następujące pliki czcionek w tym katalogu:
    - DejaVuSans.ttf
    - DejaVuSans-Bold.ttf
    - DejaVuSans-Oblique.ttf
    - DejaVuSans-BoldOblique.ttf
+4. Upewnić się, że czcionki są uwzględnione w asset pipeline, dodając następujący kod do pliku `config/initializers/assets.rb`:
+   ```ruby
+   Rails.application.config.assets.paths << Rails.root.join("app", "assets", "fonts")
+   ```
+5. Zrestartować serwer Rails po wprowadzeniu tych zmian
 
 Te czcionki są wymagane do prawidłowego generowania protokołów głosowania i raportów ze znakami diakrytycznymi.
 
