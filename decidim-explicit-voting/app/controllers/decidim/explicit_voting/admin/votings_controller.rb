@@ -21,7 +21,7 @@ module Decidim
           enforce_permission_to :read, :voting
           # Ustawiamy zmienną instancyjną @votings dla widoku
           @votings = collection.order(created_at: :desc)
-          
+
           respond_to do |format|
             format.html
             format.pdf do
@@ -131,18 +131,18 @@ module Decidim
         def protocol
           enforce_permission_to :read, :voting, voting: resource
           voting = resource
-          
+
           respond_to do |format|
             format.pdf do
               # Generowanie pliku PDF z wynikami głosowania
               pdf = generate_protocol_pdf(voting)
-              
+
               send_data pdf.render,
                 filename: "protokol_glosowania_#{voting.id}.pdf",
                 type: "application/pdf",
                 disposition: "attachment"
             end
-            
+
             format.html do
               redirect_to votings_path, alert: I18n.t("votings.protocol.no_html_format", scope: "decidim.explicit_voting.admin")
             end
@@ -159,7 +159,7 @@ module Decidim
         # --- KONIEC PRZYWRÓCONEJ METODY VOTINGS ---
 
         private
-        
+
         def voting_params
           params.require(:voting).permit(
             :start_date, :end_date, :secret,
@@ -185,12 +185,12 @@ module Decidim
           unless defined?(Prawn)
             raise "Brak biblioteki Prawn. Upewnij się, że gem prawn jest zainstalowany."
           end
-          
+
           pdf = Prawn::Document.new
-          
+
           # Ustawiamy domyślną czcionkę z obsługą polskich znaków
           set_font(pdf)
-          
+
           # Nagłówek protokołu
           pdf.font_size(16) { pdf.text "Protokół głosowania", align: :center }
           pdf.move_down 10
@@ -199,60 +199,60 @@ module Decidim
           pdf.text "Data rozpoczęcia: #{I18n.l(voting.start_date, format: :long) if voting.start_date}"
           pdf.text "Data zakończenia: #{I18n.l(voting.end_date, format: :long)}"
           pdf.text "Głosowanie #{voting.secret? ? 'tajne' : 'jawne'}"
-          
+
           # Dodajemy informację o statusie głosowania
           if voting.active?
             pdf.move_down 10
             pdf.text "Głosowanie jest w trakcie w momencie wykonywania eksportu do sprawozdania", style: :italic
           end
-          
+
           pdf.move_down 20
-          
+
           # Wyniki głosowania
           pdf.font_size(14) { pdf.text "Wyniki głosowania:", style: :bold }
           pdf.move_down 10
-          
+
           options_data = []
           options_data << ["Opcja", "Liczba głosów", "Procent"]
-          
+
           total_votes = voting.votes.count
-          
+
           voting.options.each do |option|
             votes_count = option.votes.count
             percent = total_votes > 0 ? (votes_count.to_f / total_votes * 100).round(2) : 0
             options_data << [translated_attribute(option.name), votes_count.to_s, "#{percent}%"]
           end
-          
+
           pdf.table(options_data, width: pdf.bounds.width) do
             row(0).font_style = :bold
             columns(1..2).align = :center
           end
-          
+
           pdf.move_down 20
-          
+
           # Lista głosujących (tylko dla jawnych głosowań)
           unless voting.secret?
             pdf.font_size(14) { pdf.text "Lista głosujących:", style: :bold }
             pdf.move_down 10
-            
+
             votes_data = []
             votes_data << ["Użytkownik", "Wybrana opcja", "Data oddania głosu"]
-            
+
             voting.votes.includes(:user, :voting_option).each do |vote|
               user_name = vote.user&.name || "Nieznany użytkownik"
               option_name = translated_attribute(vote.voting_option&.name) || "Nieznana opcja"
               votes_data << [user_name, option_name, I18n.l(vote.created_at, format: :long)]
             end
-            
+
             pdf.table(votes_data, width: pdf.bounds.width) do
               row(0).font_style = :bold
             end
           end
-          
+
           # Podpis i data wygenerowania protokołu
           pdf.move_down 30
           pdf.text "Protokół wygenerowany: #{I18n.l(Time.current, format: :long)}", align: :right
-          
+
           pdf
         end
 
@@ -262,19 +262,19 @@ module Decidim
           unless defined?(Prawn)
             raise "Brak biblioteki Prawn. Upewnij się, że gem prawn jest zainstalowany."
           end
-          
+
           pdf = Prawn::Document.new
-          
+
           # Ustawiamy domyślną czcionkę z obsługą polskich znaków
           set_font(pdf)
-          
+
           # Nagłówek
           pdf.font_size(16) { pdf.text "Lista głosowań", align: :center }
           pdf.move_down 20
-          
+
           votings_data = []
           votings_data << ["ID", "Tytuł", "Data rozpoczęcia", "Data zakończenia", "Status", "Tajne", "Liczba głosów"]
-          
+
           votings.each do |voting|
             status = if voting.active?
                       "Aktywne"
@@ -283,7 +283,7 @@ module Decidim
                     else
                       "Zakończone"
                     end
-                    
+
             votings_data << [
               voting.id.to_s,
               translated_attribute(voting.title).to_s.truncate(30),
@@ -294,20 +294,20 @@ module Decidim
               voting.votes.count.to_s
             ]
           end
-          
+
           pdf.table(votings_data, width: pdf.bounds.width) do
             row(0).font_style = :bold
             columns(0).align = :center
             columns(2..3).align = :center
             columns(4..6).align = :center
           end
-          
+
           pdf.move_down 20
           pdf.text "Wygenerowano: #{I18n.l(Time.current, format: :long)}", align: :right
-          
+
           pdf
         end
-        
+
         # Ustawia czcionkę z obsługą polskich znaków
         def set_font(pdf)
           # Używamy domyślnej czcionki z fallbackiem na kodowanie ASCII
@@ -320,7 +320,7 @@ module Decidim
             }
           )
           pdf.fallback_fonts(["DejaVu"])
-          
+
           # Ustawiamy czcionkę DejaVu jako domyślną (obsługuje pełne UTF-8)
           pdf.font("DejaVu")
         rescue => e

@@ -1,21 +1,40 @@
-<div class="row column">
-  <%= f.translated :text_field, :title, autofocus: true %>
-</div>
+<div class="form__wrapper">
+  <div class="card pt-4">
+    <div class="card-section debate-fields">
+      <div class="row column">
+        <%= form.translated :text_field, :title, autofocus: true, class: "js-hashtags", hashtaggable: true, label: t('.title') %>
+      </div>
 
-<div class="row column">
-  <%= f.translated :editor, :description %>
-</div>
+      <div class="row column">
+        <%= form.translated :editor, :description, hashtaggable: true, label: t('.description') %>
+      </div>
 
-<div class="row">
-  <div class="columns xlarge-6">
-    <%= f.datetime_field :start_date %>
+      <div class="row column debate-fields--finite">
+        <div class="column">
+          <%= form.datetime_field :start_date, label: t('.start_date') %>
+        </div>
+        <div class="column">
+          <%= form.datetime_field :end_date, label: t('.end_date') %>
+        </div>
+      </div>
+
+      <div class="row column">
+        <%= form.text_field :option_for, label: t('.option_for'), class: "reset-defaults text-green-700" %>
+      </div>
+
+      <div class="row column">
+        <%= form.text_field :option_against, label: t('.option_against'), wrapper: false, class: "reset-defaults text-red-700" %>
+      </div>
+
+      <div class="row column">
+        <%= form.text_field :option_neutral, label: t('.option_neutral'), class: "reset-defaults text-yellow-700" %>
+      </div>
+
+      <div class="row column">
+        <%= form.check_box :secret, label: t('.secret') %>
+      </div>
+    </div>
   </div>
-
-  <div class="columns xlarge-6">
-    <%= f.datetime_field :end_date %>
-  </div>
 </div>
 
-<div class="row column">
-  <%= f.check_box :secret %>
-</div> 
+<%= append_javascript_pack_tag "decidim_debates_admin" %>

@@ -16,62 +16,70 @@ pl:
       admin:
         votings:
           create:
-            invalid: Wystąpił problem podczas tworzenia głosowania
             error: Wystąpił problem podczas tworzenia głosowania
+            invalid: Wystąpił problem podczas tworzenia głosowania
             success: Głosowanie zostało utworzone pomyślnie
           destroy:
             error: Wystąpił problem podczas usuwania głosowania
             error_finished: Nie można usunąć zakończonego głosowania
             success: Głosowanie zostało pomyślnie usunięte
+          form:
+            description: Opis
+            end_date: Skończy się
+            option_against: Opcja PRZECIW
+            option_for: Opcja ZA
+            option_neutral: Opcja WSTRZYMUJĘ SIĘ
+            secret: Tajne
+            start_date: Zaczyna się
+            title: Tytuł
           index:
-            title: Głosowania
-            new: Nowe głosowanie
+            active: Aktywne
             confirm_destroy: Czy na pewno chcesz usunąć to głosowanie?
             destroy: Usuń
             edit: Edytuj
-            results: Wyniki
-            protocol: Pobierz protokół
-            secret_yes: "Tak"
-            secret_no: "Nie"
-            active: Aktywne
-            upcoming: Nadchodzące
-            finished: Zakończone
-            start_date: Data rozpoczęcia
             end_date: Data zakończenia
-            secret: Tajne
-            votes: Głosy
-            status: Status
-            no_html_format: "Protokół dostępny jest tylko w formacie PDF."
             export_pdf: Eksportuj głosowania do PDF
-          results:
-            title: Wyniki głosowania
-            back: Powrót
-            question: Pytanie
-            description: Opis
-            dates: Daty
-            total_votes: Łączna liczba głosów
-            type: Typ głosowania
-            secret_yes: "Tajne"
-            secret_no: "Jawne"
-            still_active: "Głosowanie jest nadal aktywne. Wyniki mogą ulec zmianie."
-            results_heading: "Wyniki głosowania"
-            option: "Opcja"
-            votes_count: "Liczba głosów"
-            percentage: "Procent"
-            votes_list: "Lista głosów"
-            user: "Użytkownik"
-            selected_option: "Wybrana opcja"
-            vote_date: "Data głosowania"
-            unknown_user: "Nieznany użytkownik"
-            unknown_option: "Nieznana opcja"
-            export_protocol: "Pobierz protokół PDF"
-            back_to_list: "Powrót do listy głosowań"
+            finished: Zakończone
+            new: Nowe głosowanie
+            no_html_format: "Protokół dostępny jest tylko w formacie PDF."
+            protocol: Pobierz protokół
+            results: Wyniki
+            secret: Tajne
+            secret_no: "Nie"
+            secret_yes: "Tak"
+            start_date: Data rozpoczęcia
+            status: Status
+            title: Głosowania
+            upcoming: Nadchodzące
+            votes: Głosy
           new:
-            title: Nowe głosowanie
             create: Utwórz głosowanie
+            title: Nowe głosowanie
+          results:
+            back: Powrót
+            back_to_list: "Powrót do listy głosowań"
+            dates: Daty
+            description: Opis
+            export_protocol: "Pobierz protokół PDF"
+            option: "Opcja"
+            percentage: "Procent"
+            question: Pytanie
+            results_heading: "Wyniki głosowania"
+            secret_no: "Jawne"
+            secret_yes: "Tajne"
+            selected_option: "Wybrana opcja"
+            still_active: "Głosowanie jest nadal aktywne. Wyniki mogą ulec zmianie."
+            title: Wyniki głosowania
+            total_votes: Łączna liczba głosów
+            unknown_option: "Nieznana opcja"
+            unknown_user: "Nieznany użytkownik"
+            user: "Użytkownik"
+            vote_date: "Data głosowania"
+            votes_count: "Liczba głosów"
+            votes_list: "Lista głosów"
           update:
-            invalid: Wystąpił problem podczas aktualizacji głosowania
             error: Wystąpił problem podczas aktualizacji głosowania
+            invalid: Wystąpił problem podczas aktualizacji głosowania
             success: Głosowanie zostało zaktualizowane pomyślnie
         voting_form:
           errors:
@@ -88,49 +96,42 @@ pl:
             success: Opcja głosowania została zaktualizowana pomyślnie
       votings:
         index:
-          title: Głosowania
           active: Aktywne
-          upcoming: Nadchodzące
-          finished: Zakończone
           end_date: Data zakończenia
-          votes: Głosy
+          explicit_votings: Głosowania jawne
+          finished: Zakończone
           hidden: Ukryte
-        show:
-          description: Opis
-          information: Informacje
-          results: Wyniki
-          option: Opcja
-          votes: Głosy
-          start_date: Data rozpoczęcia
-          end_date: Data zakończenia
-          secret: Głosowanie tajne
-          status: Status
-          secret_yes: "Tak"
-          secret_no: "Nie"
-          active: Aktywne
+          title: Głosowania
           upcoming: Nadchodzące
-          finished: Zakończone
-          not_set: Nie ustawiono
-          vote: Oddaj głos
-          submit: Głosuj
+          votes: Głosy
+        show:
+          active: Aktywne
           already_voted: Już oddałeś głos w tym głosowaniu
           cancel_vote: Anuluj głos
           confirm_cancel_vote: Czy na pewno chcesz anulować swój głos?
+          description: Opis
+          end_date: Data zakończenia
+          finished: Zakończone
+          information: Informacje
+          not_set: Nie ustawiono
+          option: Opcja
+          results: Wyniki
+          secret: Głosowanie tajne
+          secret_no: "Nie"
+          secret_yes: "Tak"
+          start_date: Data rozpoczęcia
+          status: Status
+          submit: Głosuj
+          title: Głosowania
+          upcoming: Nadchodzące
+          vote: Oddaj głos
+          votes: Głosy
       votes:
         create:
           error: Wystąpił problem podczas oddawania głosu
           success: Głos został oddany pomyślnie
         destroy:
-          success: Twój głos został pomyślnie usunięty.
           error: Wystąpił problem podczas usuwania głosu.
+          success: Twój głos został pomyślnie usunięty.
     vote_types:
-      positive: Pozytywny
       negative: Negatywny
-      neutral: Neutralny
-    votes:
-      create:
-        success: Twój głos został zarejestrowany pomyślnie
-        error: Wystąpił problem podczas rejestracji głosu
-      destroy:
-        success: Twój głos został usunięty pomyślnie
-        error: Wystąpił problem podczas usuwania głosu

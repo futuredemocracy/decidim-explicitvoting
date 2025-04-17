@@ -3,7 +3,6 @@
 module Decidim
   module ExplicitVoting
     class Voting < ApplicationRecord
-      self.table_name = "decidim_explicit_votings"
 
       include Decidim::HasComponent
       include Decidim::Traceable
@@ -34,7 +33,7 @@ module Decidim
       validates :end_date, presence: true
       validate :validate_title_presence
       validate :validate_description_presence
-      
+
       def to_s
         # Próbujemy obsłużyć zarówno przypadek gdy title jest hashem,
         # jak i gdy jest stringiem reprezentującym hash
@@ -50,14 +49,14 @@ module Decidim
         else
           return title.to_s
         end
-        
+
         locale = I18n.locale.to_s
         hash[locale] || hash["pl"] || hash["en"] || hash.values.first || ""
       end
-      
+
       def get_translated_field(field_name)
         field = self.send(field_name.to_sym)
-        
+
         if field.is_a?(Hash)
           hash = field
         elsif field.is_a?(String) && field.include?("=>")
@@ -70,18 +69,18 @@ module Decidim
         else
           return field.to_s
         end
-        
+
         locale = I18n.locale.to_s
         hash[locale] || hash["pl"] || hash["en"] || hash.values.first || ""
       end
-      
+
       def method_missing(method, *args, &block)
         if method.to_s =~ /^(title|description)_([a-z]{2})$/
           field_name = $1
           locale = $2
-          
+
           field = self.send(field_name.to_sym)
-          
+
           if field.is_a?(Hash)
             return field[locale] || ""
           elsif field.is_a?(String) && field.include?("=>")
@@ -92,26 +91,26 @@ module Decidim
               return ""
             end
           end
-          
+
           return ""
         end
-        
+
         super
       end
-      
+
       def respond_to_missing?(method, include_private = false)
         method.to_s =~ /^(title|description)_([a-z]{2})$/ || super
       end
 
       def active?
         return false unless start_date.present?
-        
+
         start_date <= Time.current && Time.current <= end_date
       end
 
       def upcoming?
         return false unless start_date.present?
-        
+
         Time.current < start_date
       end
 
@@ -122,19 +121,19 @@ module Decidim
       def current_organization
         organization
       end
-      
+
       def default_locale
         organization&.default_locale || "en"
       end
-      
+
       private
-      
+
       def validate_title_presence
         if title.blank? || (title.is_a?(Hash) && title[default_locale].blank?)
           errors.add(:title, :invalid)
         end
       end
-      
+
       def validate_description_presence
         if description.blank? || (description.is_a?(Hash) && description[default_locale].blank?)
           errors.add(:description, :invalid)
@@ -142,4 +141,4 @@ module Decidim
       end
     end
   end
-end 
+end
