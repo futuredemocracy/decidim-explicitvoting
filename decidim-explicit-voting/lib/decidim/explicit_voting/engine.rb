@@ -9,7 +9,9 @@ module Decidim
       routes do
         resources :votings, only: [:index, :show] do
           resources :votes, only: [:create, :destroy]
-          resource :protocol, only: [:show]
+          member do
+            get :protocol, defaults: { format: :pdf }
+          end
         end
         root to: "votings#index"
       end
@@ -57,4 +59,4 @@ module Decidim
       end
     end
   end
-end 
+end

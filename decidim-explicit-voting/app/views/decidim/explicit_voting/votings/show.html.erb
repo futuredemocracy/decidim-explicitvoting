@@ -3,22 +3,23 @@
 </div>
 
 <div class="container grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+  <% text_colors = ["text-green-700", "text-red-700", "text-yellow-700"] %>
+  <% bg_colors = ["bg-green-700", "bg-red-700", "bg-yellow-700"] %>
+
   <div class="md:col-span-2 space-y-6">
-    <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-2xl transition-shadow duration-150 ease-in-out">
+    <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-shadow duration-250 ease-in-out">
       <h5 class="text-xl font-semibold mb-2">Opis</h5>
       <div class="text-gray-700">
         <%= sanitize(voting.get_translated_field("description")) %>
       </div>
     </div>
 
-    <% if voting.finished? || (!voting.secret? && allowed_to?(:read, :voting, voting: voting)) %>
-    <%# if voting.finished? %>
-      <section class="space-y-4 p-4 rounded-2xl bg-white shadow-md">
+    <% if voting.finished? %>
+      <section class="space-y-4 p-4 rounded-2xl bg-white shadow-md hover:shadow-xl transition-shadow duration-250">
         <h3 class="text-lg font-bold text-gray-800">Wyniki</h3>
+        <%= t(".results.#{@voting.result_translation_key}") %>
         <% total_votes = @voting_options.sum(&:votes_count).to_f %>
         <div class="space-y-3">
-          <% text_colors = ["text-green-700", "text-red-700", "text-yellow-700"] %>
-          <% bg_colors = ["bg-green-700", "bg-red-700", "bg-yellow-700"] %>
           <% @voting_options.each_with_index do |option, i| %>
             <% percentage = total_votes.positive? ? (option.votes_count / total_votes * 100).round : 0 %>
             <div>
@@ -34,70 +35,97 @@
               </div>
             </div>
           <% end %>
+          <%= link_to t(".export_protocol"), protocol_voting_path(voting), class: "flex mx-auto justify-center w-52 mt-4 bg-blue-700 hover:bg-blue-800 text-white text-center font-semibold py-2 px-4 rounded-lg transition-colors duration-250" %>
+          <%= unless voting.secret? %>
+            <section class="space-y-4 p-4 rounded-2xl bg-white">
+              <h3 class="text-lg font-bold text-gray-800">Głosy</h3>
+              <table class="min-w-full bg-white table-auto rounded-lg shadow-md">
+                <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-4 py-2 text-left font-bold text-gray-600"><%= t(".user") %></th>
+                  <th class="px-4 py-2 text-left font-bold text-gray-600"><%= t(".option") %></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% voting.votes.includes(:user, :voting_option).each do |vote| %>
+                  <tr class="border-t border-gray-200">
+                    <td class="px-4 py-2 text-gray-800"><%= vote.user&.name || t(".unknown_user") %></td>
+                    <td class="px-4 py-2 text-gray-800"><%= translated_attribute(vote.voting_option&.name) || t(".unknown_option") %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </section>
+          <% end %>
         </div>
       </section>
     <% end %>
   </div>
 
   <div class="space-y-6">
-    <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-2xl transition-shadow duration-150 ease-in-out">
-      <h5 class="text-xl font-bold mb-2">Informacje</h5>
+    <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-shadow duration-250 ease-in-out">
+      <h5 class="text-xl font-bold mb-2"><%= t(".information") %></h5>
       <ul class="space-y-2 text-gray-700">
         <li>
-          <span class="font-bold">Data rozpoczęcia:</span>
+          <span class="font-bold"><%= t(".start_date") %></span>
           <span><%= voting.start_date ? l(voting.start_date, format: :long) : "Nie ustawiono" %></span>
         </li>
         <li>
-          <span class="font-bold">Data zakończenia:</span>
+          <span class="font-bold"><%= t(".end_date") %></span>
           <span><%= l voting.end_date, format: :long %></span>
         </li>
         <li>
-          <span class="font-bold">Głosowanie tajne:</span>
+          <span class="font-bold"><%= t(".secret") %></span>
           <span><%= voting.secret? ? "Tak" : "Nie" %></span>
         </li>
         <li>
-          <span class="font-bold">Status:</span>
+          <span class="font-bold"><%= t(".status") %></span>
           <% if voting.active? %>
-            <span class="inline-block px-2 py-1 text-sm bg-green-100 text-green-800 rounded">Aktywne</span>
+            <span class="inline-block px-2 py-1 text-sm bg-green-100 text-green-800 rounded"><%= t(".active") %></span>
           <% elsif voting.upcoming? %>
-            <span class="inline-block px-2 py-1 text-sm bg-yellow-100 text-yellow-800 rounded">Nadchodzące</span>
+            <span class="inline-block px-2 py-1 text-sm bg-yellow-100 text-yellow-800 rounded"><%= t(".upcoming") %></span>
           <% else %>
-            <span class="inline-block px-2 py-1 text-sm bg-red-100 text-red-800 rounded">Zakończone</span>
+            <span class="inline-block px-2 py-1 text-sm bg-red-100 text-red-800 rounded"><%= t(".finished") %></span>
           <% end %>
         </li>
       </ul>
     </div>
 
     <% if voting.active? && allowed_to?(:vote, :voting, voting: voting) && !user_vote %>
-      <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-2xl transition-shadow duration-150 ease-in-out">
-        <h5 class="text-xl font-semibold mb-4">Oddaj głos</h5>
+      <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-shadow duration-250 ease-in-out">
+        <h5 class="text-xl font-semibold mb-4"><%= t(".vote") %></h5>
         <%= decidim_form_for(@form, url: voting_votes_path(voting), html: { class: "space-y-4" }) do |f| %>
           <%= f.hidden_field :voting_id, value: voting.id %>
 
-          <% @voting_options.each do |option| %>
-            <div>
-              <label class="flex items-center space-x-2">
-                <%= f.radio_button :voting_option_id, option.id, class: "accent-blue-600" %>
-                <span><%= option.name %></span>
+          <% @voting_options.each_with_index do |option, i| %>
+            <div class="flex flex-row">
+              <input type="radio"
+                     name="vote[voting_option_id]"
+                     value="<%= option.id %>"
+                     class="cursor-pointer"
+              />
+
+              <label class="items-center uppercase font-bold cursor-pointer <%= text_colors[i] %>">
+                <%= option.name %>
               </label>
             </div>
           <% end %>
 
           <div>
-            <%= f.submit "Głosuj", class: "w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-150",
-                         data: { confirm: "Czy na pewno chcesz oddać swój głos?" } %>
+            <%= f.submit t(".submit"), class: "w-full mt-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-250",
+                         data: { confirm: t(".submit_confirmation") } %>
           </div>
         <% end %>
       </div>
 
     <% elsif user_vote %>
-      <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-2xl transition-shadow duration-150 ease-in-out">
-        <div class="text-center font-medium mb-2">Już oddałeś głos w tym głosowaniu</div>
+      <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-shadow duration-250 ease-in-out">
+        <div class="text-center font-medium mb-2"><%= t(".already_voted") %></div>
 
         <% if voting.active? %>
-          <%= link_to "Anuluj głos", voting_vote_path(voting, user_vote), method: :delete,
-                      class: "w-full inline-block text-center mt-2 bg-red-100 hover:bg-red-200 text-red-700 font-semibold py-2 px-4 rounded-lg transition-colors duration-150",
-                      data: { confirm: "Czy na pewno chcesz anulować swój głos?" } %>
+          <%= link_to t(".cancel_vote"), voting_vote_path(voting, user_vote), method: :delete,
+                      class: "w-full inline-block text-center mt-2 bg-red-100 hover:bg-red-200 text-red-700 font-semibold py-2 px-4 rounded-lg transition-colors duration-250",
+                      data: { confirm: t(".confirm_cancel_vote") } %>
         <% end %>
       </div>
     <% end %>

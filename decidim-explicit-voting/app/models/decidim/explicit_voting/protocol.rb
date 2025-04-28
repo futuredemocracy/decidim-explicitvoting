@@ -4,7 +4,7 @@ module Decidim
   module ExplicitVoting
     class Protocol < ApplicationRecord
       self.table_name = "decidim_explicit_voting_protocols"
-      
+
       belongs_to :voting, class_name: "Decidim::ExplicitVoting::Voting"
 
       validates :voting, presence: true
@@ -21,4 +21,4 @@ module Decidim
       end
     end
   end
-end 
+end

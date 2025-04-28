@@ -17,10 +17,8 @@ module Decidim
       default_scope { order(position: :asc) }
 
       def votes_count
-        return 0 if voting.secret? && !voting.finished?
-
         votes.count
       end
     end
   end
-end 
+end

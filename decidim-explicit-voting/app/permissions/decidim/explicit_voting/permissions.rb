@@ -12,7 +12,7 @@ module Decidim
         when :voting
           case permission_action.action
           when :read
-            allow!
+            can_read?
           when :vote
             can_vote?
           end
@@ -22,6 +22,25 @@ module Decidim
       end
 
       private
+
+      def can_read?
+        return disallow! unless user
+        return disallow! unless user_in_private_users_list? || participatory_space_admin? || organization_admin?
+
+        allow!
+      end
+
+      def user_in_private_users_list?
+        participatory_space.participatory_space_private_users.exists?(decidim_user_id: user.id)
+      end
+
+      def participatory_space_admin?
+        participatory_space.user_roles.exists?(decidim_user_id: user.id)
+      end
+
+      def organization_admin?
+        participatory_space.organization.admins.exists?(id: user.id)
+      end
 
       def can_vote?
         return disallow! unless user
@@ -35,6 +54,10 @@ module Decidim
         @voting ||= context.fetch(:voting, nil)
       end
 
+      def participatory_space
+        @participatory_space ||= context.fetch(:participatory_space, nil)
+      end
+
       def user_has_voted?
         return false unless voting && user
 
@@ -42,4 +65,4 @@ module Decidim
       end
     end
   end
-end 
+end

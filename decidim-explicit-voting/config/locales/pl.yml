@@ -2,75 +2,76 @@ pl:
   decidim:
     authorization_transfer:
       explicit_voting_votes:
-        description: Głosy oddane w jawnym głosowaniu
-        title: Głosy w jawnym głosowaniu
+        description: "Głosy oddane w jawnym głosowaniu"
+        title: "Głosy w jawnym głosowaniu"
     components:
       explicit_voting:
-        name: Głosowanie jawne
+        name: "Głosowanie jawne"
         settings:
           global:
-            announcement: Ogłoszenie
+            announcement: "Ogłoszenie"
           step:
-            announcement: Ogłoszenie
+            announcement: "Ogłoszenie"
     explicit_voting:
       admin:
         votings:
           create:
-            error: Wystąpił problem podczas tworzenia głosowania
-            invalid: Wystąpił problem podczas tworzenia głosowania
-            success: Głosowanie zostało utworzone pomyślnie
+            error: "Wystąpił problem podczas tworzenia głosowania"
+            invalid: "Wystąpił problem podczas tworzenia głosowania"
+            success: "Głosowanie zostało utworzone pomyślnie"
           destroy:
-            error: Wystąpił problem podczas usuwania głosowania
-            error_finished: Nie można usunąć zakończonego głosowania
-            success: Głosowanie zostało pomyślnie usunięte
+            error: "Wystąpił problem podczas usuwania głosowania"
+            error_finished: "Nie można usunąć zakończonego głosowania"
+            success: "Głosowanie zostało pomyślnie usunięte"
           form:
-            description: Opis
-            end_date: Skończy się
-            option_against: Opcja PRZECIW
-            option_for: Opcja ZA
-            option_neutral: Opcja WSTRZYMUJĘ SIĘ
-            secret: Tajne
-            start_date: Zaczyna się
-            title: Tytuł
+            description: "Opis"
+            end_date: "Skończy się"
+            option_against: "Opcja PRZECIW"
+            option_for: "Opcja ZA"
+            option_neutral: "Opcja WSTRZYMUJĘ SIĘ"
+            quorum: "Kworum (minimalna liczba głosujących)"
+            secret: "Tajne"
+            start_date: "Zaczyna się"
+            title: "Tytuł"
           index:
-            active: Aktywne
-            confirm_destroy: Czy na pewno chcesz usunąć to głosowanie?
-            destroy: Usuń
-            edit: Edytuj
-            end_date: Data zakończenia
-            export_pdf: Eksportuj głosowania do PDF
-            finished: Zakończone
-            new: Nowe głosowanie
+            active: "Aktywne"
+            confirm_destroy: "Czy na pewno chcesz usunąć to głosowanie?"
+            destroy: "Usuń"
+            edit: "Edytuj"
+            end_date: "Data zakończenia"
+            export_pdf: "Eksportuj głosowania do PDF"
+            finished: "Zakończone"
+            new: "Nowe głosowanie"
             no_html_format: "Protokół dostępny jest tylko w formacie PDF."
-            protocol: Pobierz protokół
-            results: Wyniki
-            secret: Tajne
+            protocol: "Pobierz protokół"
+            results: "Wyniki"
+            secret: "Tajne"
             secret_no: "Nie"
             secret_yes: "Tak"
-            start_date: Data rozpoczęcia
-            status: Status
-            title: Głosowania
-            upcoming: Nadchodzące
-            votes: Głosy
+            start_date: "Data rozpoczęcia"
+            status: "Status"
+            title: "Głosowania"
+            upcoming: "Nadchodzące"
+            votes: "Głosy"
           new:
-            create: Utwórz głosowanie
-            title: Nowe głosowanie
+            create: "Utwórz głosowanie"
+            title: "Nowe głosowanie"
           results:
-            back: Powrót
+            back: "Powrót"
             back_to_list: "Powrót do listy głosowań"
-            dates: Daty
-            description: Opis
-            export_protocol: "Pobierz protokół PDF"
+            dates: "Daty"
+            description: "Opis"
+            export_protocol: "Pobierz protokół"
             option: "Opcja"
             percentage: "Procent"
-            question: Pytanie
+            question: "Pytanie"
             results_heading: "Wyniki głosowania"
             secret_no: "Jawne"
             secret_yes: "Tajne"
             selected_option: "Wybrana opcja"
             still_active: "Głosowanie jest nadal aktywne. Wyniki mogą ulec zmianie."
-            title: Wyniki głosowania
-            total_votes: Łączna liczba głosów
+            title: "Wyniki głosowania"
+            total_votes: "Łączna liczba głosów"
             unknown_option: "Nieznana opcja"
             unknown_user: "Nieznany użytkownik"
             user: "Użytkownik"
@@ -78,60 +79,70 @@ pl:
             votes_count: "Liczba głosów"
             votes_list: "Lista głosów"
           update:
-            error: Wystąpił problem podczas aktualizacji głosowania
-            invalid: Wystąpił problem podczas aktualizacji głosowania
-            success: Głosowanie zostało zaktualizowane pomyślnie
+            error: "Wystąpił problem podczas aktualizacji głosowania"
+            invalid: "Wystąpił problem podczas aktualizacji głosowania"
+            success: "Głosowanie zostało zaktualizowane pomyślnie"
         voting_form:
           errors:
-            end_date_after_start_date: Data zakończenia musi być późniejsza niż data rozpoczęcia
+            end_date_after_start_date: "Data zakończenia musi być późniejsza niż data rozpoczęcia"
         voting_options:
           create:
-            error: Wystąpił problem podczas tworzenia opcji głosowania
-            success: Opcja głosowania została utworzona pomyślnie
+            error: "Wystąpił problem podczas tworzenia opcji głosowania"
+            success: "Opcja głosowania została utworzona pomyślnie"
           destroy:
-            error: Wystąpił problem podczas usuwania opcji głosowania
-            success: Opcja głosowania została usunięta pomyślnie
+            error: "Wystąpił problem podczas usuwania opcji głosowania"
+            success: "Opcja głosowania została usunięta pomyślnie"
           update:
-            error: Wystąpił problem podczas aktualizacji opcji głosowania
-            success: Opcja głosowania została zaktualizowana pomyślnie
+            error: "Wystąpił problem podczas aktualizacji opcji głosowania"
+            success: "Opcja głosowania została zaktualizowana pomyślnie"
       votings:
         index:
-          active: Aktywne
-          end_date: Data zakończenia
-          explicit_votings: Głosowania jawne
-          finished: Zakończone
-          hidden: Ukryte
-          title: Głosowania
-          upcoming: Nadchodzące
-          votes: Głosy
+          active: "Aktywne"
+          details: "Zobacz szczegóły →"
+          end_date: "Data zakończenia:"
+          explicit_votings: "Głosowania jawne"
+          finished: "Zakończone"
+          hidden: "Ukryte"
+          title: "Głosowania"
+          upcoming: "Nadchodzące"
+          votes: "Głosy:"
         show:
-          active: Aktywne
-          already_voted: Już oddałeś głos w tym głosowaniu
-          cancel_vote: Anuluj głos
-          confirm_cancel_vote: Czy na pewno chcesz anulować swój głos?
-          description: Opis
-          end_date: Data zakończenia
-          finished: Zakończone
-          information: Informacje
-          not_set: Nie ustawiono
-          option: Opcja
-          results: Wyniki
-          secret: Głosowanie tajne
+          active: "Aktywne"
+          already_voted: "Już oddałeś głos w tym głosowaniu"
+          cancel_vote: "Anuluj głos"
+          confirm_cancel_vote: "Czy na pewno chcesz anulować swój głos?"
+          description: "Opis"
+          end_date: "Data zakończenia:"
+          export_protocol: "Pobierz protokół"
+          finished: "Zakończone"
+          information: "Informacje"
+          not_set: "Nie ustawiono"
+          option: "Opcja"
+          results:
+            passed: "Większość głosowała za. Uchwała została przyjęta."
+            rejected: "Większość była przeciw. Uchwała została odrzucona."
+            tie: "Remis głosów za i przeciw. Uchwała została odrzucona."
+            only_neutral: "Wszyscy głosujący wstrzymali się od głosu. Uchwała została odrzucona."
+            no_votes: "Brak oddanych głosów. Uchwała została odrzucona."
+            quorum_not_met: "Nie osiągnięto wymaganego kworum. Uchwała została odrzucona."
+          secret: "Głosowanie tajne:"
           secret_no: "Nie"
           secret_yes: "Tak"
-          start_date: Data rozpoczęcia
-          status: Status
-          submit: Głosuj
-          title: Głosowania
-          upcoming: Nadchodzące
-          vote: Oddaj głos
-          votes: Głosy
+          start_date: "Data rozpoczęcia:"
+          status: "Status:"
+          submit: "Głosuj"
+          submit_confirmation: "Czy na pewno chcesz oddać głos? Zmiana swojego głosu będzie niemożliwa."
+          title: "Głosowania"
+          upcoming: "Nadchodzące"
+          user: "Użytkownik"
+          vote: "Oddaj głos"
+          votes: "Głosy"
       votes:
         create:
-          error: Wystąpił problem podczas oddawania głosu
-          success: Głos został oddany pomyślnie
+          error: "Wystąpił problem podczas oddawania głosu"
+          success: "Głos został oddany pomyślnie"
         destroy:
-          error: Wystąpił problem podczas usuwania głosu.
-          success: Twój głos został pomyślnie usunięty.
+          error: "Wystąpił problem podczas usuwania głosu."
+          success: "Twój głos został pomyślnie usunięty."
     vote_types:
-      negative: Negatywny
+      negative: "Negatywny"

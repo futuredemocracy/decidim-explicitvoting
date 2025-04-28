@@ -19,15 +19,19 @@
       </div>
 
       <div class="row column">
-        <%= form.text_field :option_for, label: t('.option_for'), class: "reset-defaults text-green-700" %>
+        <%= form.text_field :option_for, label: t('.option_for'), style: "color: rgb(21 128 61) !important;" %>
       </div>
 
       <div class="row column">
-        <%= form.text_field :option_against, label: t('.option_against'), wrapper: false, class: "reset-defaults text-red-700" %>
+        <%= form.text_field :option_against, label: t('.option_against'), style: "color: rgb(185 28 28) !important;" %>
       </div>
 
       <div class="row column">
-        <%= form.text_field :option_neutral, label: t('.option_neutral'), class: "reset-defaults text-yellow-700" %>
+        <%= form.text_field :option_neutral, label: t('.option_neutral'), style: "color: rgb(161, 98, 7) !important;" %>
+      </div>
+
+      <div class="row column">
+        <%= form.number_field :quorum, label: t('.quorum'), min: 0, step: 1 %>
       </div>
 
       <div class="row column">

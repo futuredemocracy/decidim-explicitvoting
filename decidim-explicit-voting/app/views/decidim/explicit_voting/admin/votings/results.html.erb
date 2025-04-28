@@ -15,8 +15,8 @@
     <div class="voting-info">
       <p><strong><%= t(".question") %>:</strong> <%= translated_attribute(voting.title) %></p>
       <p><strong><%= t(".description") %>:</strong> <%= translated_attribute(voting.description) %></p>
-      <p><strong><%= t(".dates") %>:</strong> 
-        <%= l voting.start_date, format: :long if voting.start_date %> - 
+      <p><strong><%= t(".dates") %>:</strong>
+        <%= l voting.start_date, format: :long if voting.start_date %> -
         <%= l voting.end_date, format: :long %>
       </p>
       <p><strong><%= t(".total_votes") %>:</strong> <%= total_votes %></p>
@@ -83,4 +83,4 @@
       <%= link_to t(".back_to_list"), votings_path, class: "button hollow" %>
     </div>
   </div>
-</div> 
+</div>

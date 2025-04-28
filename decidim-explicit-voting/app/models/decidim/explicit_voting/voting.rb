@@ -3,7 +3,6 @@
 module Decidim
   module ExplicitVoting
     class Voting < ApplicationRecord
-
       include Decidim::HasComponent
       include Decidim::Traceable
       include Decidim::Loggable
@@ -12,105 +11,29 @@ module Decidim
       translatable_fields :title, :description
 
       belongs_to :component, foreign_key: "decidim_component_id", class_name: "Decidim::Component"
-
       delegate :organization, to: :component
 
-      has_many :options,
-               class_name: "Decidim::ExplicitVoting::VotingOption",
-               foreign_key: "voting_id",
-               dependent: :destroy
-
-      has_many :votes,
-               class_name: "Decidim::ExplicitVoting::Vote",
-               foreign_key: "voting_id",
-               dependent: :destroy
-
-      has_many :protocols,
-               class_name: "Decidim::ExplicitVoting::Protocol",
-               foreign_key: "voting_id",
-               dependent: :destroy
+      has_many :options, class_name: "Decidim::ExplicitVoting::VotingOption", foreign_key: "voting_id", dependent: :destroy
+      has_many :votes, class_name: "Decidim::ExplicitVoting::Vote", foreign_key: "voting_id", dependent: :destroy
+      has_many :protocols, class_name: "Decidim::ExplicitVoting::Protocol", foreign_key: "voting_id", dependent: :destroy
 
       validates :end_date, presence: true
       validate :validate_title_presence
       validate :validate_description_presence
 
       def to_s
-        # Próbujemy obsłużyć zarówno przypadek gdy title jest hashem,
-        # jak i gdy jest stringiem reprezentującym hash
-        if title.is_a?(Hash)
-          hash = title
-        elsif title.is_a?(String) && title.include?("=>")
-          # Spróbuj zparsować string jako hash Rubiego
-          begin
-            hash = eval(title)
-          rescue
-            return title
-          end
-        else
-          return title.to_s
-        end
-
-        locale = I18n.locale.to_s
-        hash[locale] || hash["pl"] || hash["en"] || hash.values.first || ""
+        translated_field(:title)
       end
 
       def get_translated_field(field_name)
-        field = self.send(field_name.to_sym)
-
-        if field.is_a?(Hash)
-          hash = field
-        elsif field.is_a?(String) && field.include?("=>")
-          # Spróbuj zparsować string jako hash Rubiego
-          begin
-            hash = eval(field)
-          rescue
-            return field
-          end
-        else
-          return field.to_s
-        end
-
-        locale = I18n.locale.to_s
-        hash[locale] || hash["pl"] || hash["en"] || hash.values.first || ""
-      end
-
-      def method_missing(method, *args, &block)
-        if method.to_s =~ /^(title|description)_([a-z]{2})$/
-          field_name = $1
-          locale = $2
-
-          field = self.send(field_name.to_sym)
-
-          if field.is_a?(Hash)
-            return field[locale] || ""
-          elsif field.is_a?(String) && field.include?("=>")
-            begin
-              hash = eval(field)
-              return hash[locale] || ""
-            rescue
-              return ""
-            end
-          end
-
-          return ""
-        end
-
-        super
-      end
-
-      def respond_to_missing?(method, include_private = false)
-        method.to_s =~ /^(title|description)_([a-z]{2})$/ || super
+        translated_field(field_name)
       end
 
       def active?
-        return false unless start_date.present?
-
         start_date <= Time.current && Time.current <= end_date
       end
 
       def upcoming?
-        return false unless start_date.present?
-
         Time.current < start_date
       end
 
@@ -118,15 +41,66 @@ module Decidim
         Time.current > end_date
       end
 
-      def current_organization
-        organization
+      def default_locale
+        organization&.default_locale || "pl"
       end
 
-      def default_locale
-        organization&.default_locale || "en"
+      def result_translation_key
+        yes = options[0]&.votes_count.to_i
+        no = options[1]&.votes_count.to_i
+        neutral = options[2]&.votes_count.to_i
+        total = yes + no + neutral
+
+        return :quorum_not_met if total < quorum
+        return :no_votes if total.zero?
+        return :only_neutral if yes.zero? && no.zero? && neutral.positive?
+        return :tie if yes == no
+        return :passed if yes > no
+
+        :rejected
       end
 
       private
+
+      def translated_field(field_name)
+        field = send(field_name)
+
+        hash = case field
+               when Hash
+                 field
+               when String
+                 parse_yaml_safe(field) || {}
+               else
+                 {}
+               end
+
+        locale = I18n.locale.to_s
+        hash[locale] || hash["pl"] || hash["en"] || hash.values.first || ""
+      end
+
+      def parse_yaml_safe(string)
+        return unless string.include?("=>")
+
+        YAML.safe_load(
+          string.gsub(/=>/, ":"), # Zamień Ruby Hash na YAML format
+          permitted_classes: [Hash],
+          aliases: true
+        )
+      rescue Psych::SyntaxError
+        nil
+      end
+
+      def method_missing(method, *args, &block)
+        if method.to_s =~ /^(title|description)_([a-z]{2})$/
+          translated_field($1)[ $2 ] || ""
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(method, include_private = false)
+        method.to_s =~ /^(title|description)_([a-z]{2})$/ || super
+      end
 
       def validate_title_presence
         if title.blank? || (title.is_a?(Hash) && title[default_locale].blank?)
