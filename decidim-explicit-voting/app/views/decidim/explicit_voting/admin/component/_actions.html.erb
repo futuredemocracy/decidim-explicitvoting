@@ -47,9 +47,6 @@
     <span class="action-space icon"></span>
   <% end %>
 
-  <!-- Dodanie przycisku do eksportu PDF dla głosowań -->
-  <%= icon_link_to "download-cloud-2-line", decidim_admin_explicit_voting.votings_path(format: :pdf), t("decidim.explicit_voting.admin.votings.index.protocol"), class: "action-icon--download", target: :blank %>
-
   <% if allowed_to?(:soft_delete, :component, trashable_deleted_resource: component) %>
     <% resources_count = component.primary_stat || 0 %>
 
@@ -61,4 +58,4 @@
   <% else %>
     <span class="action-space icon"></span>
   <% end %>
-<% end %> 
+<% end %>

@@ -9,19 +9,21 @@ module Decidim
           return permission_action unless permission_action.scope == :admin
 
           if permission_action.subject == :participatory_space && permission_action.action == :read
-            allow! if user_is_admin? || user_is_space_admin?
+            allow! if admin?
             return permission_action
           end
 
-          if permission_action.subject == :component && [:manage, :update].include?(permission_action.action)
-            allow! if user_is_admin? || user_is_space_admin?
+          if permission_action.subject == :component && [:read, :manage, :update].include?(permission_action.action)
+            allow! if admin?
             return permission_action
           end
 
           if permission_action.subject == :voting
             case permission_action.action
-            when :create, :read, :update, :destroy, :manage
-              allow! if user_is_admin? || user_is_space_admin?
+            when :create, :read
+              allow! if admin?
+            when :destroy
+              allow! if admin? && voting.upcoming?
             end
             return permission_action
           end
@@ -31,18 +33,24 @@ module Decidim
 
         private
 
+        def admin?
+          user_is_admin? || user_is_space_admin?
+        end
+
         def user_is_admin?
           user&.admin?
         end
 
         def user_is_space_admin?
-          current_component = component
-          return false unless current_component&.participatory_space
-          user.role?("admin").for?(current_component.participatory_space)
+          component.participatory_space.user_roles.exists?(decidim_user_id: user.id, role: "admin")
         end
 
         def component
           context.fetch(:current_component, nil) || context.fetch(:component, nil)
+        end
+
+        def voting
+          @voting ||= context.fetch(:voting, nil)
         end
       end
     end

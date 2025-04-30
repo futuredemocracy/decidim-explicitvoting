@@ -39,7 +39,7 @@ module Decidim
       private
 
       def votings
-        @votings ||= Voting.where(component: current_component).order(end_date: :desc)
+        @votings ||= Voting.where(component: current_component).order(end_date: :desc).page(params[:page]).per(9)
       end
 
       def voting

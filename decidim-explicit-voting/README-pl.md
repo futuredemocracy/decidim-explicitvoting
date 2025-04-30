@@ -123,4 +123,4 @@ Kod źródłowy jest dostępny na licencji [GNU AFFERO GENERAL PUBLIC LICENSE](L
 
 ## Współpraca
 
-Zobacz [Decidim](https://github.com/decidim/decidim). 
+Zobacz [Decidim](https://github.com/decidim/decidim).

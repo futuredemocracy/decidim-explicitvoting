@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency "decidim-core", "~> 0.30.0.rc3"
   s.add_dependency "decidim-admin", "~> 0.30.0.rc3"
   s.add_dependency "decidim-participatory_processes", "~> 0.30.0.rc3"
+  s.add_dependency "prawn", "~> 2.4"
 
   s.add_development_dependency "decidim-dev", "~> 0.30.0.rc3"
-end 
+end

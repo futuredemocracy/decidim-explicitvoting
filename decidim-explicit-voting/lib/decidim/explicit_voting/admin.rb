@@ -8,4 +8,4 @@ module Decidim
       autoload :Permissions, "decidim/explicit_voting/admin/permissions"
     end
   end
-end 
+end

@@ -92,4 +92,4 @@ Decidim.register_component(:explicit_voting) do |component|
       )
     end
   end
-end 
+end

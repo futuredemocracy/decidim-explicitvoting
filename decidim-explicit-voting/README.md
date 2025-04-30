@@ -123,4 +123,4 @@ The source code is available under the [GNU AFFERO GENERAL PUBLIC LICENSE](LICEN
 
 ## Contribution
 
-See [Decidim](https://github.com/decidim/decidim). 
+See [Decidim](https://github.com/decidim/decidim).

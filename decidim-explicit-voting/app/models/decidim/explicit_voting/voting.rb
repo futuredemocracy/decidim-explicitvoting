@@ -45,17 +45,21 @@ module Decidim
         organization&.default_locale || "pl"
       end
 
+      def votes_count
+        options.sum { |opt| opt&.votes_count.to_i }
+      end
+
       def result_translation_key
-        yes = options[0]&.votes_count.to_i
-        no = options[1]&.votes_count.to_i
-        neutral = options[2]&.votes_count.to_i
-        total = yes + no + neutral
+        votes_for = options[0]&.votes_count.to_i
+        votes_against = options[1]&.votes_count.to_i
+        votes_neutral = options[2]&.votes_count.to_i
+        total = votes_for + votes_against + votes_neutral
 
         return :quorum_not_met if total < quorum
         return :no_votes if total.zero?
-        return :only_neutral if yes.zero? && no.zero? && neutral.positive?
-        return :tie if yes == no
-        return :passed if yes > no
+        return :only_neutral if votes_for.zero? && votes_against.zero? && votes_neutral.positive?
+        return :tie if votes_for == votes_against
+        return :passed if votes_for > votes_against
 
         :rejected
       end

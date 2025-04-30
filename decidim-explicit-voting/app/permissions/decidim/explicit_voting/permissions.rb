@@ -30,6 +30,15 @@ module Decidim
         allow!
       end
 
+      def can_vote?
+        return disallow! unless user
+        return disallow! unless voting.active?
+        return disallow! if user_has_voted?
+        return disallow! unless user_in_private_users_list? || participatory_space_admin?
+
+        allow!
+      end
+
       def user_in_private_users_list?
         participatory_space.participatory_space_private_users.exists?(decidim_user_id: user.id)
       end
@@ -40,14 +49,6 @@ module Decidim
 
       def organization_admin?
         participatory_space.organization.admins.exists?(id: user.id)
-      end
-
-      def can_vote?
-        return disallow! unless user
-        return disallow! unless voting.active?
-        return disallow! if user_has_voted?
-
-        allow!
       end
 
       def voting

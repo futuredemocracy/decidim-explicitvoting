@@ -6,25 +6,22 @@
 <div class="card" id="voting-results">
   <div class="card-divider">
     <h2 class="card-title">
-      <%= t(".title") %>
-      <%= link_to t(".back"), votings_path, class: "button tiny button--title" %>
+      <%= t(".voting_results") %>
     </h2>
   </div>
 
-  <div class="card-section">
+  <div class="card-section space-y-4 p-4">
     <div class="voting-info">
-      <p><strong><%= t(".question") %>:</strong> <%= translated_attribute(voting.title) %></p>
-      <p><strong><%= t(".description") %>:</strong> <%= translated_attribute(voting.description) %></p>
-      <p><strong><%= t(".dates") %>:</strong>
-        <%= l voting.start_date, format: :long if voting.start_date %> -
-        <%= l voting.end_date, format: :long %>
-      </p>
-      <p><strong><%= t(".total_votes") %>:</strong> <%= total_votes %></p>
-      <p><strong><%= t(".type") %>:</strong> <%= voting.secret? ? t(".secret_yes") : t(".secret_no") %></p>
+      <p class="mb-1"><strong><%= t(".title") %>:</strong> <%= translated_attribute(voting.title) %></p>
+      <p><strong><%= t(".description") %>:</strong> <%= translated_attribute(voting.description).html_safe %></p>
+      <p class="mt-1 mb-1"><strong><%= t(".start_date") %>:</strong> <%= l voting.start_date, format: :long %></p>
+      <p class="mb-1"><strong><%= t(".end_date") %>:</strong> <%= l voting.end_date, format: :long %></p>
+      <p class="mb-1"><strong><%= t(".total_votes") %>:</strong> <%= total_votes %></p>
+      <p class="mb-2"><strong><%= t(".type") %>:</strong> <%= voting.secret? ? t(".secret_yes") : t(".secret_no") %></p>
 
-      <% if voting.active? %>
+      <% if voting.active? || voting.upcoming? %>
         <div class="callout warning">
-          <%= t(".still_active") %>
+          <%= t(voting.active? ? ".still_active" : ".yet_to_come") %>
         </div>
       <% end %>
     </div>
@@ -78,9 +75,9 @@
       </div>
     <% end %>
 
-    <div class="button-group">
-      <%= link_to t(".export_protocol"), protocol_voting_path(voting), class: "button" %>
-      <%= link_to t(".back_to_list"), votings_path, class: "button hollow" %>
+    <div class="flex justify-between">
+      <%= link_to t(".export_protocol"), protocol_voting_path(voting), class: "button button__sm button__secondary" %>
+      <%= link_to t(".back_to_list"), votings_path, class: "button button__sm button__secondary" %>
     </div>
   </div>
 </div>

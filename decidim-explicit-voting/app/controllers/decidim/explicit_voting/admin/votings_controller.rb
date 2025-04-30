@@ -8,18 +8,6 @@ module Decidim
 
         def index
           enforce_permission_to :read, :voting
-          @votings = collection.order(created_at: :desc)
-
-          respond_to do |format|
-            format.html
-            format.pdf do
-              pdf = generate_voting_list_pdf(@votings)
-              send_data pdf.render,
-                        filename: "lista_glosowan_#{Time.current.strftime('%Y%m%d')}.pdf",
-                        type: "application/pdf",
-                        disposition: "attachment"
-            end
-          end
         end
 
         def show
@@ -45,48 +33,6 @@ module Decidim
               flash.now[:alert] = I18n.t("votings.create.error", scope: "decidim.explicit_voting.admin")
               render :new, status: :unprocessable_entity
             end
-          end
-        end
-
-        def edit
-          enforce_permission_to :update, :voting, voting: resource
-          voting = resource
-
-          @form = form(VotingForm).from_params(
-            {
-              title: voting.title.is_a?(Hash) ? voting.title : {},
-              description: voting.description.is_a?(Hash) ? voting.description : {},
-              start_date: voting.start_date,
-              end_date: voting.end_date,
-              secret: voting.secret
-            }
-          )
-        end
-
-        def update
-          enforce_permission_to :update, :voting, voting: resource
-          voting = resource
-          @form = form(VotingForm).from_params(voting_params)
-
-          if @form.valid?
-            attributes = {
-              title: @form.title || {},
-              description: @form.description || {},
-              start_date: @form.start_date,
-              end_date: @form.end_date,
-              secret: @form.secret
-            }
-
-            if voting.update(attributes)
-              flash[:notice] = I18n.t("votings.update.success", scope: "decidim.explicit_voting.admin")
-              redirect_to votings_path
-            else
-              flash.now[:alert] = I18n.t("votings.update.error", scope: "decidim.explicit_voting.admin")
-              render :edit, status: :unprocessable_entity
-            end
-          else
-            flash.now[:alert] = I18n.t("votings.update.error", scope: "decidim.explicit_voting.admin")
-            render :edit, status: :unprocessable_entity
           end
         end
 
@@ -129,7 +75,7 @@ module Decidim
         private
 
         def votings
-          @votings ||= collection.order(created_at: :desc)
+          @votings ||= collection.order(end_date: :desc).page(params[:page]).per(12)
         end
 
         def voting_params

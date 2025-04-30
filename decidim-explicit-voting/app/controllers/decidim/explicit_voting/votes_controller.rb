@@ -6,7 +6,7 @@ module Decidim
       include Decidim::FormFactory
 
       def create
-        enforce_permission_to :vote, :voting, voting: voting
+        enforce_permission_to :vote, :voting, voting: voting, participatory_space: current_participatory_space
 
         @form = form(VoteForm).from_params(
           params.merge(
@@ -28,18 +28,6 @@ module Decidim
         end
       end
 
-      def destroy
-        @vote = Vote.find_by(voting: voting, user: current_user)
-        
-        if voting.active? && @vote&.destroy
-          flash[:notice] = t(".success")
-        else
-          flash[:alert] = t(".error")
-        end
-
-        redirect_back(fallback_location: root_path)
-      end
-
       private
 
       def voting
@@ -51,4 +39,4 @@ module Decidim
       end
     end
   end
-end 
+end

@@ -8,13 +8,11 @@ module Decidim
       end
 
       def call
-        raise "Prawn gem is missing" unless defined?(Prawn)
-
         pdf = Prawn::Document.new
         set_font(pdf)
         build_header(pdf)
         build_results(pdf)
-        build_voters_list(pdf) unless voting.secret?
+        build_voters_list(pdf) unless voting.secret? || voting.votes_count.zero?
         build_footer(pdf)
         pdf
       end
@@ -35,17 +33,29 @@ module Decidim
       end
 
       def build_header(pdf)
-        pdf.font_size(16) { pdf.text "Protokół głosowania", align: :center }
+        pdf.font_size(16) { pdf.text "Protokół głosowania", align: :center, style: :bold }
         pdf.move_down 10
-        pdf.text "ID głosowania: #{voting.id}"
-        pdf.text "Pytanie: #{translated_attribute(voting.title)}"
-        pdf.text "Data rozpoczęcia: #{I18n.l(voting.start_date, format: :long) if voting.start_date}"
-        pdf.text "Data zakończenia: #{I18n.l(voting.end_date, format: :long)}"
-        pdf.text "Głosowanie #{voting.secret? ? 'tajne' : 'jawne'}"
-        if voting.active?
-          pdf.move_down 10
-          pdf.text "Głosowanie jest w trakcie w momencie wykonywania eksportu do sprawozdania", style: :italic
-        end
+        pdf.formatted_text [
+                             { text: "ID głosowania: ", styles: [:bold] },
+                             { text: voting.id.to_s }
+                           ]
+        pdf.formatted_text [
+                             { text: "Tytuł: ", styles: [:bold] },
+                             { text: translated_attribute(voting.title).to_s }
+                           ]
+        pdf.formatted_text [
+                             { text: "Data rozpoczęcia: ", styles: [:bold] },
+                             { text: I18n.l(voting.start_date, format: :long) }
+                             ]
+        pdf.formatted_text [
+                             { text: "Data zakończenia: ", styles: [:bold] },
+                             { text: I18n.l(voting.end_date, format: :long) }
+                           ]
+        pdf.text "Głosowanie #{voting.secret? ? 'tajne' : 'jawne'}", style: :bold
+        pdf.move_down 20
+        pdf.font_size(14) { pdf.text "Opis", style: :bold }
+        pdf.move_down 5
+        pdf.text translated_attribute(voting.description).gsub(/<\/?[^>]*>/, "")
         pdf.move_down 20
       end
 
@@ -56,15 +66,17 @@ module Decidim
         total_votes = voting.votes.count
         result_text = I18n.t("decidim.explicit_voting.votings.show.results.#{voting.result_translation_key}")
         pdf.text result_text, style: :italic
-        voting.options.each do |option|
-          votes_count = option.votes.count
-          percent = total_votes > 0 ? (votes_count.to_f / total_votes * 100).round(2) : 0
-          options_data << [translated_attribute(option.name), votes_count.to_s, "#{percent}%"]
-        end
+        unless voting.votes_count.zero?
+          voting.options.each do |option|
+            votes_count = option.votes.count
+            percent = total_votes > 0 ? (votes_count.to_f / total_votes * 100).round(2) : 0
+            options_data << [translated_attribute(option.name), votes_count.to_s, "#{percent}%"]
+          end
 
-        pdf.table(options_data, width: pdf.bounds.width) do
-          row(0).font_style = :bold
-          columns(1..2).align = :center
+          pdf.table(options_data, width: pdf.bounds.width) do
+            row(0).font_style = :bold
+            columns(1..2).align = :center
+          end
         end
 
         pdf.move_down 20
