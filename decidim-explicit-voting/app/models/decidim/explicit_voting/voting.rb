@@ -15,7 +15,6 @@ module Decidim
 
       has_many :options, class_name: "Decidim::ExplicitVoting::VotingOption", foreign_key: "voting_id", dependent: :destroy
       has_many :votes, class_name: "Decidim::ExplicitVoting::Vote", foreign_key: "voting_id", dependent: :destroy
-      has_many :protocols, class_name: "Decidim::ExplicitVoting::Protocol", foreign_key: "voting_id", dependent: :destroy
 
       validates :end_date, presence: true
       validate :validate_title_presence
