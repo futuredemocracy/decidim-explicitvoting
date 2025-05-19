@@ -64,6 +64,7 @@ en:
             option: "Option"
             percentage: "Percentage"
             question: "Question"
+            quorum: "Quorum"
             results_heading: "Voting results"
             secret_no: "Public"
             secret_yes: "Secret"
@@ -121,6 +122,7 @@ en:
           not_set: "Not set"
           of_votes: "votes"
           option: "Option"
+          quorum: "Quorum:"
           results:
             passed: "The majority voted FOR. The resolution has been adopted."
             rejected: "The majority voted AGAINST. The resolution has been rejected."

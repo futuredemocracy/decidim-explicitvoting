@@ -8,6 +8,16 @@ module Decidim
         return Decidim::ExplicitVoting::Admin::Permissions.new(user, permission_action, context).permissions if permission_action.scope == :admin
         return permission_action if permission_action.scope != :public
 
+        if permission_action.subject == :participatory_space && permission_action.action == :read
+          allow! if can_read?
+          return permission_action
+        end
+
+        if permission_action.subject == :component && permission_action.action == :read
+          allow! if can_read?
+          return permission_action
+        end
+
         case permission_action.subject
         when :voting
           case permission_action.action
@@ -56,7 +66,7 @@ module Decidim
       end
 
       def participatory_space
-        @participatory_space ||= context.fetch(:participatory_space, nil)
+        @participatory_space ||= context.fetch(:participatory_space, nil) || context.fetch(:current_participatory_space, nil) || context.fetch(:current_component,nil)&.participatory_space
       end
 
       def user_has_voted?

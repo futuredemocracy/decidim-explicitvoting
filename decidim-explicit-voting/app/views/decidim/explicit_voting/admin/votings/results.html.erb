@@ -17,6 +17,7 @@
       <p class="mt-1 mb-1"><strong><%= t(".start_date") %>:</strong> <%= l voting.start_date, format: :long %></p>
       <p class="mb-1"><strong><%= t(".end_date") %>:</strong> <%= l voting.end_date, format: :long %></p>
       <p class="mb-1"><strong><%= t(".total_votes") %>:</strong> <%= total_votes %></p>
+      <p class="mb-1"><strong><%= t(".quorum") %>:</strong> <%= voting.quorum %></p>
       <p class="mb-2"><strong><%= t(".type") %>:</strong> <%= voting.secret? ? t(".secret_yes") : t(".secret_no") %></p>
 
       <% if voting.active? || voting.upcoming? %>

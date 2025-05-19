@@ -64,6 +64,7 @@ pl:
             option: "Opcja"
             percentage: "Procent"
             question: "Pytanie"
+            quorum: "Kworum"
             results_heading: "Wyniki głosowania"
             secret_no: "Jawne"
             secret_yes: "Tajne"
@@ -121,6 +122,7 @@ pl:
           not_set: "Nie ustawiono"
           of_votes: "głosów"
           option: "Opcja"
+          quorum: "Kworum:"
           results:
             passed: "Większość głosowała za. Uchwała została przyjęta."
             rejected: "Większość była przeciw. Uchwała została odrzucona."
