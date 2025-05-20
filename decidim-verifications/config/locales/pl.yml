@@ -276,6 +276,7 @@ pl:
           create:
             error: Wystąpił błąd podczas wysyłania Twojego żądania.
             success: Dziękujemy! Wysłaliśmy wiadomość SMS na Twój numer telefonu.
+            text: "Twój kod weryfikacyjny to: %{code}"
           destroy:
             success: Resetowanie kodu weryfikacyjnego się powiodło. Prosimy o ponowne wpisanie numeru telefonu.
           edit:

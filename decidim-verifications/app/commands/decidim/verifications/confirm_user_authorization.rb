@@ -24,6 +24,7 @@ module Decidim
       #
       # Returns nothing.
       def call
+        binding.pry
         return already_confirmed! if authorization.granted?
 
         return invalid! unless form.valid?
